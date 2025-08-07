@@ -48,8 +48,8 @@ const BookCommerce = () => {
   const categories = [
     "All Genres",
     "general",
-    "fiction",
-    "non-fiction", 
+    "fiction", 
+    "non-fiction",
     "science",
     "technology",
     "business",
@@ -301,10 +301,7 @@ const BookCommerce = () => {
               variant="secondary"
               size="sm"
               className="w-full font-semibold"
-              disabled={cartQuantity >= product.stock_quantity}
-            >
-              Buy Now
-            </BuyNowButton>
+            />
           </div>
         </CardFooter>
       </Card>
