@@ -745,63 +745,65 @@ export function AdminDashboard() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8 max-w-7xl">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-foreground">Admin Dashboard</h1>
-        <p className="text-muted-foreground">Manage your books, inventory, and business operations</p>
+    <div className="container mx-auto px-2 sm:px-4 py-4 sm:py-8 max-w-7xl">
+      <div className="mb-4 sm:mb-8">
+        <h1 className="text-2xl sm:text-3xl font-bold text-foreground">Admin Dashboard</h1>
+        <p className="text-sm sm:text-base text-muted-foreground">Manage your books, inventory, and business operations</p>
       </div>
 
       {/* Stats Overview */}
       {stats && (
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 mb-4 sm:mb-8">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Total Products</CardTitle>
-              <Package className="h-4 w-4 text-muted-foreground" />
+              <CardTitle className="text-xs sm:text-sm font-medium">Total Products</CardTitle>
+              <Package className="h-3 w-3 sm:h-4 sm:w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{stats.totalProducts}</div>
+              <div className="text-lg sm:text-2xl font-bold">{stats.totalProducts}</div>
             </CardContent>
           </Card>
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Active Products</CardTitle>
-              <CheckCircle className="h-4 w-4 text-muted-foreground" />
+              <CardTitle className="text-xs sm:text-sm font-medium">Active Products</CardTitle>
+              <CheckCircle className="h-3 w-3 sm:h-4 sm:w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{stats.activeProducts}</div>
+              <div className="text-lg sm:text-2xl font-bold">{stats.activeProducts}</div>
             </CardContent>
           </Card>
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Out of Stock</CardTitle>
-              <XCircle className="h-4 w-4 text-muted-foreground" />
+              <CardTitle className="text-xs sm:text-sm font-medium">Out of Stock</CardTitle>
+              <XCircle className="h-3 w-3 sm:h-4 sm:w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{stats.outOfStock}</div>
+              <div className="text-lg sm:text-2xl font-bold">{stats.outOfStock}</div>
             </CardContent>
           </Card>
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Recent Orders</CardTitle>
+              <CardTitle className="text-xs sm:text-sm font-medium">Recent Orders</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{stats.recentOrders.length}</div>
+              <div className="text-lg sm:text-2xl font-bold">{stats.recentOrders.length}</div>
             </CardContent>
           </Card>
         </div>
       )}
 
-      <Tabs defaultValue="overview" className="space-y-6">
-        <TabsList className="grid w-full grid-cols-7">
-          <TabsTrigger value="overview">Overview</TabsTrigger>
-          <TabsTrigger value="products">Products</TabsTrigger>
-          <TabsTrigger value="orders">Orders</TabsTrigger>
-          <TabsTrigger value="requests">Book Requests</TabsTrigger>
-          <TabsTrigger value="promo">Promo Codes</TabsTrigger>
-          <TabsTrigger value="hero">Hero Images</TabsTrigger>
-          <TabsTrigger value="analytics">Analytics</TabsTrigger>
-        </TabsList>
+      <Tabs defaultValue="overview" className="space-y-4 sm:space-y-6">
+        <div className="w-full overflow-x-auto">
+          <TabsList className="grid w-full min-w-[700px] grid-cols-7">
+            <TabsTrigger value="overview" className="text-xs sm:text-sm">Overview</TabsTrigger>
+            <TabsTrigger value="products" className="text-xs sm:text-sm">Products</TabsTrigger>
+            <TabsTrigger value="orders" className="text-xs sm:text-sm">Orders</TabsTrigger>
+            <TabsTrigger value="requests" className="text-xs sm:text-sm">Book Requests</TabsTrigger>
+            <TabsTrigger value="promo" className="text-xs sm:text-sm">Promo Codes</TabsTrigger>
+            <TabsTrigger value="hero" className="text-xs sm:text-sm">Hero Images</TabsTrigger>
+            <TabsTrigger value="analytics" className="text-xs sm:text-sm">Analytics</TabsTrigger>
+          </TabsList>
+        </div>
 
         {/* Overview Tab */}
         <TabsContent value="overview">
@@ -821,8 +823,8 @@ export function AdminDashboard() {
           <div className="space-y-6">
             <Tabs defaultValue="all-products" className="w-full">
               <TabsList className="grid w-full grid-cols-2">
-                <TabsTrigger value="all-products">All Products</TabsTrigger>
-                <TabsTrigger value="best-authors">Best Authors</TabsTrigger>
+                <TabsTrigger value="all-products" className="text-xs sm:text-sm">All Products</TabsTrigger>
+                <TabsTrigger value="best-authors" className="text-xs sm:text-sm">Best Authors</TabsTrigger>
               </TabsList>
 
               {/* All Products Tab */}
@@ -834,35 +836,40 @@ export function AdminDashboard() {
               <TabsContent value="best-authors" className="space-y-4">
                 <Card>
                   <CardHeader>
-                    <div className="flex items-center justify-between">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                       <div>
-                        <CardTitle className="flex items-center gap-2">
-                          <Star className="h-5 w-5" />
+                        <CardTitle className="flex items-center gap-2 text-lg sm:text-xl">
+                          <Star className="h-4 w-4 sm:h-5 sm:w-5" />
                           Best Authors Management
                         </CardTitle>
-                        <CardDescription>
+                        <CardDescription className="text-sm">
                           Manage which authors are featured as "best authors" on your homepage.
                         </CardDescription>
                       </div>
-                      <Button onClick={() => {
-                        resetBestAuthorForm();
-                        setShowBestAuthorDialog(true);
-                      }}>
+                      <Button 
+                        onClick={() => {
+                          resetBestAuthorForm();
+                          setShowBestAuthorDialog(true);
+                        }}
+                        size="sm"
+                        className="self-start sm:self-center"
+                      >
                         <Plus className="h-4 w-4 mr-2" />
-                        Add Best Author
+                        <span className="hidden sm:inline">Add Best Author</span>
+                        <span className="sm:hidden">Add</span>
                       </Button>
                     </div>
                   </CardHeader>
                   <CardContent>
-                    <div className="rounded-md border">
+                    <div className="rounded-md border overflow-x-auto">
                       <Table>
                         <TableHeader>
                           <TableRow>
-                            <TableHead>Author Name</TableHead>
-                            <TableHead>Display Order</TableHead>
-                            <TableHead>Status</TableHead>
-                            <TableHead>Created</TableHead>
-                            <TableHead className="text-right">Actions</TableHead>
+                            <TableHead className="min-w-[150px]">Author Name</TableHead>
+                            <TableHead className="hidden sm:table-cell min-w-[120px]">Display Order</TableHead>
+                            <TableHead className="min-w-[80px]">Status</TableHead>
+                            <TableHead className="hidden md:table-cell min-w-[100px]">Created</TableHead>
+                            <TableHead className="text-right min-w-[120px]">Actions</TableHead>
                           </TableRow>
                         </TableHeader>
                         <TableBody>
@@ -877,47 +884,51 @@ export function AdminDashboard() {
                               <TableRow key={author.id}>
                                 <TableCell>
                                   <div className="flex items-center gap-2">
-                                    <Star className="h-4 w-4 text-yellow-500" />
-                                    <span className="font-medium">{author.author_name}</span>
+                                    <Star className="h-4 w-4 text-yellow-500 flex-shrink-0" />
+                                    <span className="font-medium truncate">{author.author_name}</span>
                                   </div>
                                 </TableCell>
-                                <TableCell>
-                                  <Badge variant="outline">
+                                <TableCell className="hidden sm:table-cell">
+                                  <Badge variant="outline" className="text-xs">
                                     Order: {author.display_order}
                                   </Badge>
                                 </TableCell>
                                 <TableCell>
                                   <Badge 
                                     variant={author.is_active ? 'default' : 'secondary'}
+                                    className="text-xs"
                                   >
                                     {author.is_active ? 'Active' : 'Inactive'}
                                   </Badge>
                                 </TableCell>
-                                <TableCell>
+                                <TableCell className="hidden md:table-cell text-sm">
                                   {new Date(author.created_at).toLocaleDateString()}
                                 </TableCell>
                                 <TableCell className="text-right">
-                                  <div className="flex items-center justify-end gap-2">
+                                  <div className="flex items-center justify-end gap-1">
                                     <Button
                                       variant="outline"
                                       size="sm"
                                       onClick={() => openEditBestAuthorDialog(author)}
+                                      className="h-8 w-8 p-0"
                                     >
-                                      <Edit className="h-4 w-4" />
+                                      <Edit className="h-3 w-3" />
                                     </Button>
                                     <Button
                                       variant="outline"
                                       size="sm"
                                       onClick={() => toggleBestAuthorStatus(author.id, author.is_active)}
+                                      className="h-8 w-8 p-0"
                                     >
-                                      {author.is_active ? <XCircle className="h-4 w-4" /> : <CheckCircle className="h-4 w-4" />}
+                                      {author.is_active ? <XCircle className="h-3 w-3" /> : <CheckCircle className="h-3 w-3" />}
                                     </Button>
                                     <Button
                                       variant="outline"
                                       size="sm"
                                       onClick={() => deleteBestAuthor(author.id)}
+                                      className="h-8 w-8 p-0"
                                     >
-                                      <Trash2 className="h-4 w-4" />
+                                      <Trash2 className="h-3 w-3" />
                                     </Button>
                                   </div>
                                 </TableCell>
@@ -948,37 +959,42 @@ export function AdminDashboard() {
         <TabsContent value="promo">
           <Card>
             <CardHeader>
-              <div className="flex items-center justify-between">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div>
-                  <CardTitle className="flex items-center gap-2">
-                    <Tag className="h-5 w-5" />
+                  <CardTitle className="flex items-center gap-2 text-lg sm:text-xl">
+                    <Tag className="h-4 w-4 sm:h-5 sm:w-5" />
                     Promo Codes Management
                   </CardTitle>
-                  <CardDescription>
+                  <CardDescription className="text-sm">
                     Create and manage discount codes for your customers.
                   </CardDescription>
                 </div>
-                <Button onClick={() => {
-                  resetPromoForm();
-                  setShowPromoDialog(true);
-                }}>
+                <Button 
+                  onClick={() => {
+                    resetPromoForm();
+                    setShowPromoDialog(true);
+                  }}
+                  size="sm"
+                  className="self-start sm:self-center"
+                >
                   <Plus className="h-4 w-4 mr-2" />
-                  Add Promo Code
+                  <span className="hidden sm:inline">Add Promo Code</span>
+                  <span className="sm:hidden">Add Code</span>
                 </Button>
               </div>
             </CardHeader>
             <CardContent>
-              <div className="rounded-md border">
+              <div className="rounded-md border overflow-x-auto">
                 <Table>
                   <TableHeader>
                     <TableRow>
-                      <TableHead>Code</TableHead>
-                      <TableHead>Type</TableHead>
-                      <TableHead>Value</TableHead>
-                      <TableHead>Usage</TableHead>
-                      <TableHead>Expires</TableHead>
-                      <TableHead>Status</TableHead>
-                      <TableHead className="text-right">Actions</TableHead>
+                      <TableHead className="min-w-[100px]">Code</TableHead>
+                      <TableHead className="hidden sm:table-cell min-w-[100px]">Type</TableHead>
+                      <TableHead className="min-w-[80px]">Value</TableHead>
+                      <TableHead className="hidden md:table-cell min-w-[80px]">Usage</TableHead>
+                      <TableHead className="hidden lg:table-cell min-w-[100px]">Expires</TableHead>
+                      <TableHead className="min-w-[80px]">Status</TableHead>
+                      <TableHead className="text-right min-w-[120px]">Actions</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
@@ -993,29 +1009,29 @@ export function AdminDashboard() {
                         <TableRow key={promo.id}>
                           <TableCell>
                             <div className="flex items-center gap-2">
-                              <Tag className="h-4 w-4 text-blue-500" />
-                              <span className="font-mono font-medium">{promo.code}</span>
+                              <Tag className="h-4 w-4 text-blue-500 flex-shrink-0" />
+                              <span className="font-mono font-medium text-sm truncate">{promo.code}</span>
                             </div>
                           </TableCell>
-                          <TableCell>
-                            <Badge variant="outline">
+                          <TableCell className="hidden sm:table-cell">
+                            <Badge variant="outline" className="text-xs">
                               {promo.discount_type === 'percentage' ? (
-                                <><Percent className="h-3 w-3 mr-1" />Percentage</>
+                                <><Percent className="h-3 w-3 mr-1" />%</>
                               ) : (
-                                <>₹ Fixed</>
+                                <>৳ Fixed</>
                               )}
                             </Badge>
                           </TableCell>
                           <TableCell>
-                            <span className="font-medium">
+                            <span className="font-medium text-sm">
                               {promo.discount_type === 'percentage' ? `${promo.discount_value}%` : `৳${promo.discount_value}`}
                             </span>
                           </TableCell>
-                          <TableCell>
-                            <div className="text-sm">
+                          <TableCell className="hidden md:table-cell">
+                            <div className="text-xs">
                               <div>{promo.used_count}/{promo.usage_limit || '∞'}</div>
                               {promo.usage_limit && (
-                                <div className="w-16 bg-gray-200 rounded-full h-1 mt-1">
+                                <div className="w-12 bg-gray-200 rounded-full h-1 mt-1">
                                   <div 
                                     className="bg-blue-600 h-1 rounded-full" 
                                     style={{ width: `${Math.min((promo.used_count / promo.usage_limit) * 100, 100)}%` }}
@@ -1024,47 +1040,51 @@ export function AdminDashboard() {
                               )}
                             </div>
                           </TableCell>
-                          <TableCell>
+                          <TableCell className="hidden lg:table-cell">
                             {promo.valid_until ? (
                               <div className="flex items-center gap-1">
-                                <Calendar className="h-3 w-3" />
-                                <span className="text-sm">
+                                <Calendar className="h-3 w-3 flex-shrink-0" />
+                                <span className="text-xs">
                                   {new Date(promo.valid_until).toLocaleDateString()}
                                 </span>
                               </div>
                             ) : (
-                              <span className="text-muted-foreground text-sm">No expiry</span>
+                              <span className="text-muted-foreground text-xs">No expiry</span>
                             )}
                           </TableCell>
                           <TableCell>
                             <Badge 
                               variant={promo.status === 'active' ? 'default' : 'secondary'}
+                              className="text-xs"
                             >
                               {promo.status}
                             </Badge>
                           </TableCell>
                           <TableCell className="text-right">
-                            <div className="flex items-center justify-end gap-2">
+                            <div className="flex items-center justify-end gap-1">
                               <Button
                                 variant="outline"
                                 size="sm"
                                 onClick={() => openEditPromoDialog(promo)}
+                                className="h-8 w-8 p-0"
                               >
-                                <Edit className="h-4 w-4" />
+                                <Edit className="h-3 w-3" />
                               </Button>
                               <Button
                                 variant="outline"
                                 size="sm"
                                 onClick={() => togglePromoCodeStatus(promo.id, promo.status)}
+                                className="h-8 w-8 p-0"
                               >
-                                {promo.status === 'active' ? <XCircle className="h-4 w-4" /> : <CheckCircle className="h-4 w-4" />}
+                                {promo.status === 'active' ? <XCircle className="h-3 w-3" /> : <CheckCircle className="h-3 w-3" />}
                               </Button>
                               <Button
                                 variant="outline"
                                 size="sm"
                                 onClick={() => deletePromoCode(promo.id)}
+                                className="h-8 w-8 p-0"
                               >
-                                <Trash2 className="h-4 w-4" />
+                                <Trash2 className="h-3 w-3" />
                               </Button>
                             </div>
                           </TableCell>
@@ -1082,36 +1102,41 @@ export function AdminDashboard() {
         <TabsContent value="hero">
           <Card>
             <CardHeader>
-              <div className="flex items-center justify-between">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div>
-                  <CardTitle className="flex items-center gap-2">
-                    <Package className="h-5 w-5" />
+                  <CardTitle className="flex items-center gap-2 text-lg sm:text-xl">
+                    <Package className="h-4 w-4 sm:h-5 sm:w-5" />
                     Hero Images Management
                   </CardTitle>
-                  <CardDescription>
+                  <CardDescription className="text-sm">
                     Manage hero background images for different devices (Desktop, Tablet, Mobile).
                   </CardDescription>
                 </div>
-                <Button onClick={() => {
-                  resetHeroForm();
-                  setShowHeroDialog(true);
-                }}>
+                <Button 
+                  onClick={() => {
+                    resetHeroForm();
+                    setShowHeroDialog(true);
+                  }}
+                  size="sm"
+                  className="self-start sm:self-center"
+                >
                   <Plus className="h-4 w-4 mr-2" />
-                  Add Hero Image
+                  <span className="hidden sm:inline">Add Hero Image</span>
+                  <span className="sm:hidden">Add Image</span>
                 </Button>
               </div>
             </CardHeader>
             <CardContent>
-              <div className="rounded-md border">
+              <div className="rounded-md border overflow-x-auto">
                 <Table>
                   <TableHeader>
                     <TableRow>
-                      <TableHead>Device Type</TableHead>
-                      <TableHead>Image URL</TableHead>
-                      <TableHead>Alt Text</TableHead>
-                      <TableHead>Order</TableHead>
-                      <TableHead>Status</TableHead>
-                      <TableHead className="text-right">Actions</TableHead>
+                      <TableHead className="min-w-[100px]">Device</TableHead>
+                      <TableHead className="hidden md:table-cell min-w-[200px]">Image URL</TableHead>
+                      <TableHead className="hidden lg:table-cell min-w-[120px]">Alt Text</TableHead>
+                      <TableHead className="hidden sm:table-cell min-w-[80px]">Order</TableHead>
+                      <TableHead className="min-w-[80px]">Status</TableHead>
+                      <TableHead className="text-right min-w-[120px]">Actions</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
@@ -1125,54 +1150,58 @@ export function AdminDashboard() {
                       heroImages.map((hero) => (
                         <TableRow key={hero.id}>
                           <TableCell>
-                            <Badge variant="outline">
+                            <Badge variant="outline" className="text-xs">
                               {hero.device_type.charAt(0).toUpperCase() + hero.device_type.slice(1)}
                             </Badge>
                           </TableCell>
-                          <TableCell>
-                            <div className="max-w-xs truncate font-mono text-sm">
+                          <TableCell className="hidden md:table-cell">
+                            <div className="max-w-[150px] truncate font-mono text-xs">
                               {hero.image_url}
                             </div>
                           </TableCell>
-                          <TableCell>
-                            <div className="max-w-xs truncate">
+                          <TableCell className="hidden lg:table-cell">
+                            <div className="max-w-[100px] truncate text-xs">
                               {hero.alt_text}
                             </div>
                           </TableCell>
-                          <TableCell>
-                            <Badge variant="secondary">
+                          <TableCell className="hidden sm:table-cell">
+                            <Badge variant="secondary" className="text-xs">
                               {hero.display_order}
                             </Badge>
                           </TableCell>
                           <TableCell>
                             <Badge 
                               variant={hero.is_active ? 'default' : 'secondary'}
+                              className="text-xs"
                             >
                               {hero.is_active ? 'Active' : 'Inactive'}
                             </Badge>
                           </TableCell>
                           <TableCell className="text-right">
-                            <div className="flex items-center justify-end gap-2">
+                            <div className="flex items-center justify-end gap-1">
                               <Button
                                 variant="outline"
                                 size="sm"
                                 onClick={() => openEditHeroDialog(hero)}
+                                className="h-8 w-8 p-0"
                               >
-                                <Edit className="h-4 w-4" />
+                                <Edit className="h-3 w-3" />
                               </Button>
                               <Button
                                 variant="outline"
                                 size="sm"
                                 onClick={() => toggleHeroImageStatus(hero.id, hero.is_active)}
+                                className="h-8 w-8 p-0"
                               >
-                                {hero.is_active ? <XCircle className="h-4 w-4" /> : <CheckCircle className="h-4 w-4" />}
+                                {hero.is_active ? <XCircle className="h-3 w-3" /> : <CheckCircle className="h-3 w-3" />}
                               </Button>
                               <Button
                                 variant="outline"
                                 size="sm"
                                 onClick={() => deleteHeroImage(hero.id)}
+                                className="h-8 w-8 p-0"
                               >
-                                <Trash2 className="h-4 w-4" />
+                                <Trash2 className="h-3 w-3" />
                               </Button>
                             </div>
                           </TableCell>
@@ -1263,12 +1292,12 @@ export function AdminDashboard() {
 
       {/* Promo Code Dialog */}
       <Dialog open={showPromoDialog} onOpenChange={setShowPromoDialog}>
-        <DialogContent className="max-w-md">
+        <DialogContent className="max-w-md mx-4 sm:mx-auto max-h-[90vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle>
+            <DialogTitle className="text-lg sm:text-xl">
               {editingPromo ? 'Edit Promo Code' : 'Add Promo Code'}
             </DialogTitle>
-            <DialogDescription>
+            <DialogDescription className="text-sm">
               {editingPromo ? 'Update the promo code details' : 'Create a new discount code for customers'}
             </DialogDescription>
           </DialogHeader>
@@ -1372,12 +1401,12 @@ export function AdminDashboard() {
 
       {/* Hero Image Dialog */}
       <Dialog open={showHeroDialog} onOpenChange={setShowHeroDialog}>
-        <DialogContent className="max-w-md">
+        <DialogContent className="max-w-md mx-4 sm:mx-auto max-h-[90vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle>
+            <DialogTitle className="text-lg sm:text-xl">
               {editingHero ? 'Edit Hero Image' : 'Add Hero Image'}
             </DialogTitle>
-            <DialogDescription>
+            <DialogDescription className="text-sm">
               {editingHero ? 'Update the hero image details' : 'Add a new hero background image for a specific device'}
             </DialogDescription>
           </DialogHeader>
