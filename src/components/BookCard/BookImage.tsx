@@ -9,7 +9,7 @@ interface BookImageProps {
 
 export function BookImage({ image, title, isOutOfStock }: BookImageProps) {
   return (
-    <div className="aspect-[3/4] overflow-hidden bg-muted rounded-t-xl relative">
+    <div className="aspect-[3/4] overflow-hidden bg-muted rounded-lg relative">
       <img 
         src={image} 
         alt={title}
@@ -17,7 +17,7 @@ export function BookImage({ image, title, isOutOfStock }: BookImageProps) {
       />
       {isOutOfStock && (
         <div className="absolute inset-0 bg-black/60 flex items-center justify-center backdrop-blur-sm">
-          <Badge variant="destructive" className="font-medium">Out of Stock</Badge>
+          <Badge variant="destructive" className="font-medium text-xs">Out of Stock</Badge>
         </div>
       )}
     </div>

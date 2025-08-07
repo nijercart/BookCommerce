@@ -91,48 +91,53 @@ export function BookCard(book: Book) {
       onWishlistToggle={handleWishlistToggle}
     >
       <DialogTrigger asChild>
-        <Card className="overflow-hidden hover:shadow-md transition-all duration-200 cursor-pointer bg-card border border-border/40 rounded-xl group">
-          <BookBadges 
-            isPopular={book.isPopular} 
-            hasDiscount={hasDiscount} 
-            discountPercent={discountPercent} 
-          />
-          
-          <BookImage 
-            image={book.image} 
-            title={book.title} 
-            isOutOfStock={cartQuantity >= book.inStock} 
-          />
-          
-          <div className="p-3 space-y-2.5">
-            <BookInfo
-              condition={book.condition}
-              rating={book.rating}
-              title={book.title}
-              author={book.author}
-              description={book.description}
+        <Card className="overflow-hidden hover:shadow-lg transition-all duration-300 cursor-pointer bg-card border border-border/40 rounded-xl group">
+          <div className="relative">
+            <BookBadges 
+              isPopular={book.isPopular} 
+              hasDiscount={hasDiscount} 
+              discountPercent={discountPercent} 
             />
             
-            <div className="flex items-center justify-between">
-              <div className="font-semibold text-base text-foreground">
-                ৳{book.price.toFixed(2)}
-                {hasDiscount && (
-                  <span className="ml-1.5 text-xs text-muted-foreground line-through font-normal">
-                    ৳{book.originalPrice?.toFixed(2)}
-                  </span>
-                )}
-              </div>
-              <div className="text-xs text-muted-foreground">
-                {book.inStock} left
-              </div>
-            </div>
+            <WishlistButton 
+              isWishlisted={isWishlisted} 
+              onToggle={handleWishlistToggle} 
+            />
             
-            <BookActions
-              book={book}
-              cartQuantity={cartQuantity}
-              onAddToCart={handleAddToCart}
+            <BookImage 
+              image={book.image} 
+              title={book.title} 
+              isOutOfStock={cartQuantity >= book.inStock} 
             />
           </div>
+          
+          <BookInfo
+            condition={book.condition}
+            rating={book.rating}
+            title={book.title}
+            author={book.author}
+            description={book.description}
+          />
+          
+          <div className="flex items-center justify-between px-3 pb-1">
+            <div className="font-bold text-lg text-foreground">
+              ৳{book.price.toFixed(2)}
+              {hasDiscount && (
+                <span className="ml-2 text-sm text-muted-foreground line-through font-normal">
+                  ৳{book.originalPrice?.toFixed(2)}
+                </span>
+              )}
+            </div>
+            <div className="text-xs text-blue-600 font-medium">
+              {book.inStock} left
+            </div>
+          </div>
+          
+          <BookActions
+            book={book}
+            cartQuantity={cartQuantity}
+            onAddToCart={handleAddToCart}
+          />
         </Card>
       </DialogTrigger>
     </BookDialog>
