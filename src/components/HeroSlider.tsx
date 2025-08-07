@@ -145,16 +145,16 @@ const HeroSlider = () => {
 
         {/* Content */}
         <div className="flex-1 text-center text-white px-4">
-          <h1 className={`text-2xl md:text-4xl lg:text-5xl font-bold mb-2 md:mb-4 leading-tight transition-all duration-500 ${
+          {/* <h1 className={`text-2xl md:text-4xl lg:text-5xl font-bold mb-2 md:mb-4 leading-tight transition-all duration-500 ${
             isTransitioning ? 'opacity-0 translate-y-4' : 'opacity-100 translate-y-0'
           }`}>
             {slides[currentSlide % slides.length]?.title || "Discover Great Books"}
-          </h1>
-          <p className={`text-sm md:text-lg lg:text-xl mb-4 md:mb-8 opacity-90 max-w-2xl mx-auto transition-all duration-500 delay-100 ${
+          </h1> */}
+          {/* <p className={`text-sm md:text-lg lg:text-xl mb-4 md:mb-8 opacity-90 max-w-2xl mx-auto transition-all duration-500 delay-100 ${
             isTransitioning ? 'opacity-0 translate-y-4' : 'opacity-100 translate-y-0'
           }`}>
             {slides[currentSlide % slides.length]?.subtitle || "Find your next favorite read"}
-          </p>
+          </p> */}
           <div className={`transition-all duration-500 delay-200 ${
             isTransitioning ? 'opacity-0 translate-y-4' : 'opacity-100 translate-y-0'
           }`}>
