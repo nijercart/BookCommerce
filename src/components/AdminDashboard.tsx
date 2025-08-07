@@ -19,6 +19,7 @@ import { AdvancedAnalytics } from "./analytics/AdvancedAnalytics";
 import { OrderManagement } from "./admin/OrderManagement";
 import { CustomerSupport } from "./admin/CustomerSupport";
 import { UserManagement } from "./admin/UserManagement";
+import { BookRequestManagement } from "./admin/BookRequestManagement";
 
 interface DashboardStats {
   totalProducts: number;
@@ -792,10 +793,11 @@ export function AdminDashboard() {
       )}
 
       <Tabs defaultValue="overview" className="space-y-6">
-        <TabsList className="grid w-full grid-cols-6">
+        <TabsList className="grid w-full grid-cols-7">
           <TabsTrigger value="overview">Overview</TabsTrigger>
           <TabsTrigger value="products">Products</TabsTrigger>
           <TabsTrigger value="orders">Orders</TabsTrigger>
+          <TabsTrigger value="requests">Book Requests</TabsTrigger>
           <TabsTrigger value="promo">Promo Codes</TabsTrigger>
           <TabsTrigger value="hero">Hero Images</TabsTrigger>
           <TabsTrigger value="analytics">Analytics</TabsTrigger>
@@ -935,6 +937,11 @@ export function AdminDashboard() {
         {/* Orders Tab */}
         <TabsContent value="orders">
           <OrderManagement />
+        </TabsContent>
+
+        {/* Book Requests Tab */}
+        <TabsContent value="requests">
+          <BookRequestManagement />
         </TabsContent>
 
         {/* Promo Codes Tab */}
