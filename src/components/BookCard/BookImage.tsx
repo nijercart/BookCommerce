@@ -9,11 +9,11 @@ interface BookImageProps {
 
 export function BookImage({ image, title, isOutOfStock }: BookImageProps) {
   return (
-    <div className="aspect-[3/4] overflow-hidden bg-muted rounded-t-lg relative group">
+    <div className="aspect-[3/4] overflow-hidden bg-muted rounded-t-xl relative">
       <img 
         src={image} 
         alt={title}
-        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+        className="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-200"
       />
       {isOutOfStock && (
         <div className="absolute inset-0 bg-black/60 flex items-center justify-center backdrop-blur-sm">

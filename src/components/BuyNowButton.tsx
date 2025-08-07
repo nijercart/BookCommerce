@@ -70,7 +70,6 @@ export function BuyNowButton({ book, variant = "secondary", size = "sm", classNa
       disabled={book.inStock <= 0 || isLoading}
       className={className}
     >
-      <ShoppingBag className="h-4 w-4 mr-1" />
       {isLoading ? "Processing..." : "Buy Now"}
     </Button>
   );

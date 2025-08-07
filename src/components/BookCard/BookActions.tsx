@@ -13,7 +13,7 @@ export function BookActions({ book, cartQuantity, onAddToCart }: BookActionsProp
   const isOutOfStock = cartQuantity >= book.inStock;
   
   return (
-    <div className="flex gap-2 w-full">
+    <div className="flex gap-1.5 w-full">
       <Button 
         size="sm" 
         variant={cartQuantity > 0 ? "default" : "outline"}
@@ -22,7 +22,7 @@ export function BookActions({ book, cartQuantity, onAddToCart }: BookActionsProp
           onAddToCart();
         }}
         disabled={isOutOfStock}
-        className="flex-1 text-xs font-medium h-8"
+        className="flex-1 text-[10px] font-medium h-7 rounded-md"
       >
         {isOutOfStock ? "Out of Stock" : 
          cartQuantity > 0 ? `In Cart (${cartQuantity})` : "Add to Cart"}
@@ -30,9 +30,9 @@ export function BookActions({ book, cartQuantity, onAddToCart }: BookActionsProp
       
       <BuyNowButton 
         book={book}
-        variant="secondary"
+        variant="default"
         size="sm"
-        className="flex-1 text-xs font-medium h-8"
+        className="flex-1 text-[10px] font-medium h-7 rounded-md bg-blue-600 hover:bg-blue-700 text-white border-0"
       />
     </div>
   );

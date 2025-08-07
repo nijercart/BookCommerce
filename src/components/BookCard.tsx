@@ -91,7 +91,7 @@ export function BookCard(book: Book) {
       onWishlistToggle={handleWishlistToggle}
     >
       <DialogTrigger asChild>
-        <Card className="flex flex-col justify-between w-full h-full cursor-pointer group relative bg-card border border-border hover:shadow-lg transition-all duration-200">
+        <Card className="overflow-hidden hover:shadow-md transition-all duration-200 cursor-pointer bg-card border border-border/40 rounded-xl group">
           <BookBadges 
             isPopular={book.isPopular} 
             hasDiscount={hasDiscount} 
@@ -103,15 +103,13 @@ export function BookCard(book: Book) {
             onToggle={handleWishlistToggle} 
           />
           
-          <CardHeader className="p-0 flex-shrink-0">
-            <BookImage 
-              image={book.image} 
-              title={book.title} 
-              isOutOfStock={cartQuantity >= book.inStock} 
-            />
-          </CardHeader>
+          <BookImage 
+            image={book.image} 
+            title={book.title} 
+            isOutOfStock={cartQuantity >= book.inStock} 
+          />
           
-          <CardContent className="p-3 flex-grow">
+          <div className="p-3 space-y-2.5">
             <BookInfo
               condition={book.condition}
               rating={book.rating}
@@ -119,14 +117,19 @@ export function BookCard(book: Book) {
               author={book.author}
               description={book.description}
             />
-          </CardContent>
-          
-          <CardFooter className="p-3 pt-0 flex flex-col gap-3 mt-auto">
-            <div className="flex items-center gap-2 w-full">
-              <span className="text-lg font-bold text-foreground">৳{book.price}</span>
-              {hasDiscount && (
-                <span className="text-sm text-muted-foreground line-through">৳{book.originalPrice}</span>
-              )}
+            
+            <div className="flex items-center justify-between">
+              <div className="font-semibold text-base text-foreground">
+                ৳{book.price.toFixed(2)}
+                {hasDiscount && (
+                  <span className="ml-1.5 text-xs text-muted-foreground line-through font-normal">
+                    ৳{book.originalPrice?.toFixed(2)}
+                  </span>
+                )}
+              </div>
+              <div className="text-xs text-muted-foreground">
+                {book.inStock} left
+              </div>
             </div>
             
             <BookActions
@@ -134,7 +137,7 @@ export function BookCard(book: Book) {
               cartQuantity={cartQuantity}
               onAddToCart={handleAddToCart}
             />
-          </CardFooter>
+          </div>
         </Card>
       </DialogTrigger>
     </BookDialog>

@@ -11,12 +11,12 @@ export function BookBadges({ isPopular, hasDiscount, discountPercent }: BookBadg
   return (
     <div className="absolute top-2 left-2 z-10 flex flex-col gap-1">
       {isPopular && (
-        <Badge className="bg-accent text-accent-foreground text-[10px] px-1.5 py-0.5 font-medium">
-          Popular
+        <Badge className="bg-green-500 text-white text-[9px] px-1.5 py-0.5 font-medium rounded-md shadow-sm">
+          HOT
         </Badge>
       )}
       {hasDiscount && (
-        <Badge className="bg-destructive text-destructive-foreground text-[10px] px-1.5 py-0.5 font-medium">
+        <Badge className="bg-red-500 text-white text-[9px] px-1.5 py-0.5 font-medium rounded-md shadow-sm">
           -{discountPercent}%
         </Badge>
       )}
