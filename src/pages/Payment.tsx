@@ -108,9 +108,10 @@ const Payment = () => {
         .from('promo_codes')
         .select('*')
         .eq('code', promoCode.toUpperCase())
-        .eq('status', 'active');
+        .eq('status', 'active')
+        .single();
 
-      if (error || !data || data.length === 0) {
+      if (error || !data) {
         toast({
           title: "Invalid promo code",
           description: "Please check your code and try again.",
@@ -119,7 +120,7 @@ const Payment = () => {
         return;
       }
 
-      const promo = data[0];
+      const promo = data;
 
       // Check if promo code is still valid
       const now = new Date();
@@ -280,6 +281,18 @@ const Payment = () => {
 
       if (itemsError) throw itemsError;
 
+      // If promo code was used, increment usage count
+      if (appliedPromo) {
+        const { error: promoError } = await supabase
+          .from('promo_codes')
+          .update({ used_count: appliedPromo.used_count + 1 })
+          .eq('id', appliedPromo.id);
+
+        if (promoError) {
+          console.error('Error updating promo code usage:', promoError);
+        }
+      }
+
       // Clear cart if it was a cart purchase, or clear session storage if buy now
       if (isBuyNowMode) {
         sessionStorage.removeItem('buyNowItem');
@@ -288,7 +301,7 @@ const Payment = () => {
       }
 
       toast({
-        title: "Order placed successfully! ",
+        title: "Order placed successfully!",
         description: `Your order ${orderNumber} has been received and is being processed.`,
       });
 

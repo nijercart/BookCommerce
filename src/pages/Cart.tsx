@@ -1,3 +1,4 @@
+
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { Button } from "@/components/ui/button";
@@ -10,6 +11,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { useState } from "react";
+
 const Cart = () => {
   const {
     items,
@@ -19,15 +21,14 @@ const Cart = () => {
     getTotalPrice,
     getTotalItems
   } = useCartStore();
-  const {
-    toast
-  } = useToast();
+  const { toast } = useToast();
   const navigate = useNavigate();
   
   // Promo code state
   const [promoCode, setPromoCode] = useState("");
   const [appliedPromo, setAppliedPromo] = useState<any>(null);
   const [isApplyingPromo, setIsApplyingPromo] = useState(false);
+
   const handleCheckout = () => {
     if (items.length === 0) {
       toast({
@@ -57,9 +58,10 @@ const Cart = () => {
         .from('promo_codes')
         .select('*')
         .eq('code', promoCode.toUpperCase())
-        .eq('status', 'active');
+        .eq('status', 'active')
+        .single();
 
-      if (error || !data || data.length === 0) {
+      if (error || !data) {
         toast({
           title: "Invalid promo code",
           description: "Please check your code and try again.",
@@ -68,7 +70,7 @@ const Cart = () => {
         return;
       }
 
-      const promo = data[0];
+      const promo = data;
 
       // Check if promo code is still valid
       const now = new Date();
@@ -133,8 +135,10 @@ const Cart = () => {
     const discount = calculateDiscount();
     return subtotal + deliveryCharge - discount;
   };
+
   if (items.length === 0) {
-    return <div className="min-h-screen bg-background">
+    return (
+      <div className="min-h-screen bg-background">
         <Header />
         
         <div className="container mx-auto px-4 py-12">
@@ -154,9 +158,12 @@ const Cart = () => {
             </div>
           </div>
         </div>
-      </div>;
+      </div>
+    );
   }
-  return <div className="min-h-screen bg-background">
+
+  return (
+    <div className="min-h-screen bg-background">
       <Header />
       
       <div className="container mx-auto px-4 py-8">
@@ -177,7 +184,8 @@ const Cart = () => {
         <div className="grid lg:grid-cols-3 gap-8">
           {/* Cart Items */}
           <div className="lg:col-span-2 space-y-4">
-            {items.map(item => <Card key={item.book.id} className="shadow-page">
+            {items.map(item => (
+              <Card key={item.book.id} className="shadow-page">
                 <CardContent className="p-6">
                   <div className="flex gap-4">
                     {/* Book Image */}
@@ -197,7 +205,12 @@ const Cart = () => {
                             {item.book.condition === "new" ? "New" : "Pre-owned"}
                           </Badge>
                         </div>
-                        <Button variant="ghost" size="icon" className="h-8 w-8 text-destructive hover:text-destructive" onClick={() => removeItem(item.book.id)}>
+                        <Button 
+                          variant="ghost" 
+                          size="icon" 
+                          className="h-8 w-8 text-destructive hover:text-destructive" 
+                          onClick={() => removeItem(item.book.id)}
+                        >
                           <Trash2 className="h-4 w-4" />
                         </Button>
                       </div>
@@ -205,14 +218,33 @@ const Cart = () => {
                       {/* Quantity and Price */}
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-2">
-                          <Button variant="outline" size="icon" className="h-8 w-8" onClick={() => updateQuantity(item.book.id, item.quantity - 1)} disabled={item.quantity <= 1}>
+                          <Button 
+                            variant="outline" 
+                            size="icon" 
+                            className="h-8 w-8" 
+                            onClick={() => updateQuantity(item.book.id, item.quantity - 1)} 
+                            disabled={item.quantity <= 1}
+                          >
                             <Minus className="h-3 w-3" />
                           </Button>
-                          <Input type="number" value={item.quantity} onChange={e => {
-                        const qty = parseInt(e.target.value) || 1;
-                        updateQuantity(item.book.id, Math.max(1, Math.min(qty, item.book.inStock)));
-                      }} className="w-16 h-8 text-center" min="1" max={item.book.inStock} />
-                          <Button variant="outline" size="icon" className="h-8 w-8" onClick={() => updateQuantity(item.book.id, item.quantity + 1)} disabled={item.quantity >= item.book.inStock}>
+                          <Input 
+                            type="number" 
+                            value={item.quantity} 
+                            onChange={(e) => {
+                              const qty = parseInt(e.target.value) || 1;
+                              updateQuantity(item.book.id, Math.max(1, Math.min(qty, item.book.inStock)));
+                            }}
+                            className="w-16 h-8 text-center" 
+                            min="1" 
+                            max={item.book.inStock} 
+                          />
+                          <Button 
+                            variant="outline" 
+                            size="icon" 
+                            className="h-8 w-8" 
+                            onClick={() => updateQuantity(item.book.id, item.quantity + 1)} 
+                            disabled={item.quantity >= item.book.inStock}
+                          >
                             <Plus className="h-3 w-3" />
                           </Button>
                         </div>
@@ -223,13 +255,16 @@ const Cart = () => {
                         </div>
                       </div>
 
-                      {item.quantity >= item.book.inStock && <p className="text-xs text-amber-600 mt-1">
+                      {item.quantity >= item.book.inStock && (
+                        <p className="text-xs text-amber-600 mt-1">
                           Maximum quantity available: {item.book.inStock}
-                        </p>}
+                        </p>
+                      )}
                     </div>
                   </div>
                 </CardContent>
-              </Card>)}
+              </Card>
+            ))}
 
             <div className="flex justify-between items-center pt-4">
               <Button variant="outline" onClick={clearCart}>
@@ -326,6 +361,8 @@ const Cart = () => {
       </div>
       
       <Footer />
-    </div>;
+    </div>
+  );
 };
+
 export default Cart;
