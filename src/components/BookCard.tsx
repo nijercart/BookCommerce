@@ -92,7 +92,7 @@ export function BookCard(book: Book) {
       onWishlistToggle={handleWishlistToggle}
     >
       <DialogTrigger asChild>
-        <Card className="h-full flex flex-col cursor-pointer group relative bg-white border border-gray-100 hover:shadow-lg transition-all duration-200 hover:scale-[1.01] rounded-lg overflow-hidden">
+        <Card className="h-full flex flex-col cursor-pointer group relative bg-card border-border hover:shadow-lg transition-all duration-200">
           <BookBadges 
             isPopular={book.isPopular} 
             hasDiscount={hasDiscount} 
@@ -122,11 +122,11 @@ export function BookCard(book: Book) {
             />
           </CardContent>
           
-          <CardFooter className="p-3 pt-0 flex flex-col gap-2 mt-auto">
+          <CardFooter className="p-3 pt-0 flex flex-col gap-3 mt-auto">
             <div className="flex items-center gap-2 w-full">
-              <span className="text-lg font-bold text-gray-900">৳{book.price}</span>
+              <span className="text-lg font-bold text-foreground">৳{book.price}</span>
               {hasDiscount && (
-                <span className="text-sm text-gray-500 line-through">৳{book.originalPrice}</span>
+                <span className="text-sm text-muted-foreground line-through">৳{book.originalPrice}</span>
               )}
             </div>
             
