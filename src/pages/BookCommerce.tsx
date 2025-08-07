@@ -207,41 +207,46 @@ const BookCommerce = () => {
     };
     
     return (
-      <Card className="group relative overflow-hidden bg-card hover:shadow-book transition-all duration-300 transform hover:-translate-y-1">
+      <Card className="group relative overflow-hidden bg-card hover:shadow-product transition-all duration-300 transform hover:-translate-y-1 flex flex-col h-full">
         {product.featured && (
-          <Badge className="absolute top-3 left-3 z-10 bg-accent text-accent-foreground font-medium">
+          <Badge className="absolute top-3 left-3 z-10 bg-primary text-primary-foreground font-semibold text-xs">
             Featured
           </Badge>
         )}
         
         <CardHeader className="p-0">
-          <div className="aspect-[3/4] overflow-hidden bg-muted">
+          <div className="aspect-[3/4] overflow-hidden bg-muted relative">
             <img 
               src={primaryImage} 
               alt={product.title}
               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
             />
+            {cartQuantity >= product.stock_quantity && (
+              <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
+                <Badge variant="destructive" className="text-sm font-semibold">Out of Stock</Badge>
+              </div>
+            )}
           </div>
         </CardHeader>
         
-        <CardContent className="p-4 space-y-3">
-          <div className="flex items-start justify-between">
+        <CardContent className="p-4 space-y-3 flex-grow">
+          <div className="flex items-start justify-between gap-2">
             <Badge 
               variant={product.condition === "new" ? "default" : "secondary"} 
-              className="text-xs font-medium"
+              className="text-xs font-medium shrink-0"
             >
               {product.condition === "new" ? "New" : "Used"}
             </Badge>
-            <Button variant="ghost" size="icon" className="h-8 w-8 hover:text-red-500">
+            <Button variant="ghost" size="icon" className="h-8 w-8 hover:text-red-500 shrink-0">
               <Heart className="h-4 w-4" />
             </Button>
           </div>
           
-          <CardTitle className="text-base font-semibold line-clamp-2 leading-tight">
+          <CardTitle className="text-base font-bold line-clamp-2 leading-tight group-hover:text-primary transition-colors">
             {product.title}
           </CardTitle>
           
-          <p className="text-sm text-muted-foreground font-medium">{product.author}</p>
+          <p className="text-sm text-muted-foreground font-medium line-clamp-1">{product.author}</p>
           
           <div className="flex items-center gap-1">
             {[...Array(5)].map((_, i) => (
@@ -253,34 +258,38 @@ const BookCommerce = () => {
             <span className="text-sm text-muted-foreground ml-1">(4.0)</span>
           </div>
           
-          {/* Enhanced Product Information */}
+          {/* Product Information */}
           <div className="text-xs text-muted-foreground space-y-1">
-            <p><strong>Category:</strong> {product.category}</p>
-            {product.publisher && <p><strong>Publisher:</strong> {product.publisher}</p>}
-            {product.publication_year && product.pages && (
-              <p><strong>Year:</strong> {product.publication_year} • <strong>Pages:</strong> {product.pages}</p>
+            <p><span className="font-semibold">Category:</span> {product.category}</p>
+            {product.publisher && (
+              <p><span className="font-semibold">Publisher:</span> {product.publisher}</p>
             )}
-            <p className={`font-medium ${product.stock_quantity > 0 ? 'text-green-600' : 'text-red-600'}`}>
-              <strong>Stock:</strong> {product.stock_quantity > 0 ? `${product.stock_quantity} available` : 'Out of stock'}
+            <p className={`font-semibold ${product.stock_quantity > 0 ? 'text-green-600' : 'text-red-600'}`}>
+              {product.stock_quantity > 0 ? `${product.stock_quantity} in stock` : 'Out of stock'}
             </p>
           </div>
         </CardContent>
         
-        <CardFooter className="p-4 pt-0 flex flex-col gap-3">
-          <div className="flex items-center gap-2 w-full">
+        <CardFooter className="p-4 pt-0 space-y-4 mt-auto">
+          <div className="flex items-baseline gap-2 w-full">
             <span className="text-xl font-bold text-primary">৳{product.price}</span>
             {product.original_price && product.original_price > product.price && (
-              <span className="text-sm text-muted-foreground line-through">৳{product.original_price}</span>
+              <>
+                <span className="text-sm text-muted-foreground line-through">৳{product.original_price}</span>
+                <Badge variant="destructive" className="text-xs ml-auto">
+                  {Math.round(((product.original_price - product.price) / product.original_price) * 100)}% OFF
+                </Badge>
+              </>
             )}
           </div>
           
-          <div className="flex gap-2 w-full">
+          <div className="space-y-2 w-full">
             <Button 
               size="sm" 
               variant="default" 
               onClick={() => handleAddToCart(product)}
               disabled={cartQuantity >= product.stock_quantity}
-              className="flex-1 gap-2"
+              className="w-full gap-2 font-semibold"
             >
               <ShoppingCart className="h-4 w-4" />
               {cartQuantity >= product.stock_quantity ? "Out of Stock" : 
@@ -291,8 +300,11 @@ const BookCommerce = () => {
               book={bookForBuyNow}
               variant="secondary"
               size="sm"
-              className="flex-1"
-            />
+              className="w-full font-semibold"
+              disabled={cartQuantity >= product.stock_quantity}
+            >
+              Buy Now
+            </BuyNowButton>
           </div>
         </CardFooter>
       </Card>
