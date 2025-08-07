@@ -1,3 +1,4 @@
+
 import { useState, useMemo, useEffect } from "react";
 import { Footer } from "@/components/Footer";
 import { Button } from "@/components/ui/button";
@@ -186,6 +187,9 @@ const BookCommerce = () => {
                         product.product_images?.[0]?.image_url || 
                         "https://images.unsplash.com/photo-1544947950-fa07a98d237f?w=300&h=400&fit=crop";
     
+    const hasDiscount = product.original_price && product.original_price > product.price;
+    const discountPercent = hasDiscount ? Math.round(((product.original_price - product.price) / product.original_price) * 100) : 0;
+    
     // Convert product to Book format for BuyNowButton
     const bookForBuyNow = {
       id: product.id,
@@ -207,100 +211,100 @@ const BookCommerce = () => {
     };
     
     return (
-      <Card className="group relative overflow-hidden bg-card hover:shadow-product transition-all duration-300 transform hover:-translate-y-1 flex flex-col h-full">
-        {product.featured && (
-          <Badge className="absolute top-3 left-3 z-10 bg-primary text-primary-foreground font-semibold text-xs">
-            Featured
-          </Badge>
-        )}
+      <Card className="product-card h-full flex flex-col cursor-pointer group relative">
+        {/* Badges */}
+        <div className="absolute top-2 left-2 z-10 flex flex-col gap-1">
+          {product.featured && (
+            <Badge className="sale-badge text-[10px] px-1.5 py-0.5">
+              Popular
+            </Badge>
+          )}
+          {hasDiscount && (
+            <Badge className="discount-badge text-[10px] px-1.5 py-0.5">
+              -{discountPercent}%
+            </Badge>
+          )}
+        </div>
         
-        <CardHeader className="p-0">
-          <div className="aspect-[3/4] overflow-hidden bg-muted relative">
+        {/* Wishlist Button */}
+        <Button 
+          variant="ghost" 
+          size="icon" 
+          className="absolute top-2 right-2 z-10 h-7 w-7 rounded-full bg-white/80 backdrop-blur-sm hover:bg-white transition-all text-muted-foreground hover:text-red-500"
+        >
+          <Heart className="h-3.5 w-3.5" />
+        </Button>
+        
+        <CardHeader className="p-0 flex-shrink-0">
+          <div className="aspect-[3/4] overflow-hidden bg-muted rounded-t-lg relative">
             <img 
               src={primaryImage} 
               alt={product.title}
               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
             />
             {cartQuantity >= product.stock_quantity && (
-              <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
-                <Badge variant="destructive" className="text-sm font-semibold">Out of Stock</Badge>
+              <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
+                <Badge variant="destructive">Out of Stock</Badge>
               </div>
             )}
           </div>
         </CardHeader>
         
-        <CardContent className="p-4 space-y-3 flex-grow">
-          <div className="flex items-start justify-between gap-2">
+        <CardContent className="p-3 space-y-2 flex-grow">
+          <div className="flex items-center justify-between">
             <Badge 
               variant={product.condition === "new" ? "default" : "secondary"} 
-              className="text-xs font-medium shrink-0"
+              className="text-[10px] px-2 py-0.5"
             >
-              {product.condition === "new" ? "New" : "Used"}
+              {product.condition === "new" ? "New" : "Pre-owned"}
             </Badge>
-            <Button variant="ghost" size="icon" className="h-8 w-8 hover:text-red-500 shrink-0">
-              <Heart className="h-4 w-4" />
-            </Button>
+            <div className="flex items-center gap-1">
+              <Star className="h-3 w-3 fill-rating-star text-rating-star" />
+              <span className="text-xs font-medium">4.0</span>
+            </div>
           </div>
           
-          <CardTitle className="text-base font-bold line-clamp-2 leading-tight group-hover:text-primary transition-colors">
+          <CardTitle className="text-sm font-semibold line-clamp-2 leading-tight group-hover:text-primary transition-colors">
             {product.title}
           </CardTitle>
           
-          <p className="text-sm text-muted-foreground font-medium line-clamp-1">{product.author}</p>
+          <p className="text-xs text-muted-foreground line-clamp-1">{product.author}</p>
           
-          <div className="flex items-center gap-1">
-            {[...Array(5)].map((_, i) => (
-              <Star 
-                key={i} 
-                className={`h-4 w-4 ${i < 4 ? 'fill-yellow-400 text-yellow-400' : 'text-muted-foreground'}`} 
-              />
-            ))}
-            <span className="text-sm text-muted-foreground ml-1">(4.0)</span>
-          </div>
-          
-          {/* Product Information */}
-          <div className="text-xs text-muted-foreground space-y-1">
-            <p><span className="font-semibold">Category:</span> {product.category}</p>
-            {product.publisher && (
-              <p><span className="font-semibold">Publisher:</span> {product.publisher}</p>
-            )}
-            <p className={`font-semibold ${product.stock_quantity > 0 ? 'text-green-600' : 'text-red-600'}`}>
-              {product.stock_quantity > 0 ? `${product.stock_quantity} in stock` : 'Out of stock'}
+          {product.description && (
+            <p className="text-xs text-muted-foreground line-clamp-2 leading-relaxed">
+              {product.description}
             </p>
-          </div>
+          )}
         </CardContent>
         
-        <CardFooter className="p-4 pt-0 space-y-4 mt-auto">
-          <div className="flex items-baseline gap-2 w-full">
-            <span className="text-xl font-bold text-primary">৳{product.price}</span>
-            {product.original_price && product.original_price > product.price && (
-              <>
-                <span className="text-sm text-muted-foreground line-through">৳{product.original_price}</span>
-                <Badge variant="destructive" className="text-xs ml-auto">
-                  {Math.round(((product.original_price - product.price) / product.original_price) * 100)}% OFF
-                </Badge>
-              </>
+        <CardFooter className="p-3 pt-0 flex flex-col gap-2 mt-auto">
+          <div className="flex items-center gap-2 w-full">
+            <span className="price-text text-lg font-bold">৳{product.price}</span>
+            {hasDiscount && (
+              <span className="text-sm text-muted-foreground line-through">৳{product.original_price}</span>
             )}
           </div>
           
-          <div className="space-y-2 w-full">
+          <div className="flex gap-2 w-full">
             <Button 
               size="sm" 
-              variant="default" 
-              onClick={() => handleAddToCart(product)}
+              variant={cartQuantity > 0 ? "accent" : "default"}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleAddToCart(product);
+              }}
               disabled={cartQuantity >= product.stock_quantity}
-              className="w-full gap-2 font-semibold"
+              className="flex-1 text-xs font-medium"
             >
-              <ShoppingCart className="h-4 w-4" />
               {cartQuantity >= product.stock_quantity ? "Out of Stock" : 
-               cartQuantity > 0 ? `In Cart (${cartQuantity})` : "Add to Cart"}
+               cartQuantity > 0 ? `Added (${cartQuantity})` : "Add to Cart"}
             </Button>
             
             <BuyNowButton 
               book={bookForBuyNow}
               variant="secondary"
               size="sm"
-              className="w-full font-semibold"
+              className="flex-1 text-xs font-medium"
             />
           </div>
         </CardFooter>
@@ -400,7 +404,7 @@ const BookCommerce = () => {
       <section className="py-12">
         <div className="max-w-screen-2xl mx-auto px-6">
           {filteredProducts.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 2xl:grid-cols-7 gap-6">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
               {filteredProducts.map(product => (
                 <ProductCard key={product.id} product={product} />
               ))}
