@@ -437,6 +437,7 @@ const Payment = () => {
   </CardHeader>
 
   <CardContent className="space-y-4">
+    <h3>Only Send Money </h3>
     {/* Payment Options */}
     <RadioGroup onValueChange={setPaymentMethod} className="space-y-3">
       {[
