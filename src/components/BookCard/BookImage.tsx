@@ -9,7 +9,7 @@ interface BookImageProps {
 
 export function BookImage({ image, title, isOutOfStock }: BookImageProps) {
   return (
-    <div className="aspect-[3/4] overflow-hidden bg-gray-100 relative group">
+    <div className="aspect-[3/4] overflow-hidden bg-muted rounded-t-lg relative group">
       <img 
         src={image} 
         alt={title}

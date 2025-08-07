@@ -9,14 +9,14 @@ interface BookBadgesProps {
 
 export function BookBadges({ isPopular, hasDiscount, discountPercent }: BookBadgesProps) {
   return (
-    <div className="absolute top-3 left-3 z-10 flex flex-col gap-2">
+    <div className="absolute top-2 left-2 z-10 flex flex-col gap-1">
       {isPopular && (
-        <Badge className="bg-green-500 text-white text-xs px-2 py-1 font-medium rounded-full">
+        <Badge className="bg-accent text-accent-foreground text-[10px] px-1.5 py-0.5 font-medium">
           Popular
         </Badge>
       )}
       {hasDiscount && (
-        <Badge className="bg-red-500 text-white text-xs px-2 py-1 font-medium rounded-full">
+        <Badge className="bg-destructive text-destructive-foreground text-[10px] px-1.5 py-0.5 font-medium">
           -{discountPercent}%
         </Badge>
       )}

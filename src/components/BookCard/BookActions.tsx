@@ -2,6 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { BuyNowButton } from "../BuyNowButton";
 import { Book } from "@/lib/bookData";
+import { ShoppingCart } from "lucide-react";
 
 interface BookActionsProps {
   book: Book;
@@ -13,17 +14,18 @@ export function BookActions({ book, cartQuantity, onAddToCart }: BookActionsProp
   const isOutOfStock = cartQuantity >= book.inStock;
   
   return (
-    <div className="flex gap-3 w-full">
+    <div className="flex gap-2 w-full">
       <Button 
-        size="default" 
+        size="sm" 
         variant="outline"
         onClick={(e) => {
           e.stopPropagation();
           onAddToCart();
         }}
         disabled={isOutOfStock}
-        className="flex-1 h-10 font-medium bg-white hover:bg-gray-50 border border-gray-300 text-gray-700 rounded-lg"
+        className="flex-1 text-xs font-medium h-8 px-3 bg-white hover:bg-gray-50 border border-gray-200 text-gray-700"
       >
+        <ShoppingCart className="h-3.5 w-3.5 mr-1" />
         {isOutOfStock ? "Out of Stock" : 
          cartQuantity > 0 ? `In Cart (${cartQuantity})` : "Add to Cart"}
       </Button>
@@ -31,8 +33,8 @@ export function BookActions({ book, cartQuantity, onAddToCart }: BookActionsProp
       <BuyNowButton 
         book={book}
         variant="default"
-        size="default"
-        className="flex-1 h-10 font-medium bg-blue-500 hover:bg-blue-600 text-white border-0 rounded-lg"
+        size="sm"
+        className="flex-1 text-xs font-medium h-8 px-3 bg-orange-500 hover:bg-orange-600 text-white border-0"
       />
     </div>
   );
