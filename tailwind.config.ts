@@ -122,7 +122,5 @@ export default {
 			}
 		}
 	},
-	// tailwind.config.js
-plugins: [
-  require('@tailwindcss/line-clamp'),
-],
+	plugins: [require("tailwindcss-animate")],
+} satisfies Config;
