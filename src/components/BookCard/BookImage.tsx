@@ -16,7 +16,7 @@ export function BookImage({ image, title, isOutOfStock }: BookImageProps) {
         className="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-200"
       />
       {isOutOfStock && (
-        <div className="absolute inset-0 bg-black/60 flex items-center justify-center backdrop-blur-sm">
+        <div className="absolute inset-0 bg-black/60 flex items-center justify-center sm:backdrop-blur-sm">
           <Badge variant="destructive" className="font-medium text-xs">Out of Stock</Badge>
         </div>
       )}
