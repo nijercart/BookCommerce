@@ -51,29 +51,29 @@ const HeroSlider = () => {
   const deviceImages = getImagesForDevice();
   const currentImage = deviceImages.length > 0 ? deviceImages[currentSlide % deviceImages.length] : heroImages[0];
 
-  // const slides = [
-  //   {
-  //     id: 1,
-  //     title: "Discover Your Next Great Read",
-  //     subtitle: "Explore thousands of books from classic literature to modern bestsellers",
-  //     cta: "Browse Books",
-  //     link: "/books"
-  //   },
-  //   {
-  //     id: 2,
-  //     title: "Premium Quality, Affordable Prices",
-  //     subtitle: "Get the best deals on new and pre-owned books",
-  //     cta: "Shop Now",
-  //     link: "/new-books"
-  //   },
-  //   {
-  //     id: 3,
-  //     title: "Build Your Personal Library",
-  //     subtitle: "Create your wishlist and never miss a book you love",
-  //     cta: "Start Collecting",
-  //     link: "/wishlist"
-  //   }
-  // ];
+  const slides = [
+    {
+      id: 1,
+      // title: "Discover Your Next Great Read",
+      // subtitle: "Explore thousands of books from classic literature to modern bestsellers",
+      // cta: "Browse Books",
+      link: "/books"
+    },
+    {
+      id: 2,
+      // title: "Premium Quality, Affordable Prices",
+      // subtitle: "Get the best deals on new and pre-owned books",
+      // cta: "Shop Now",
+      // link: "/new-books"
+    },
+    {
+      id: 3,
+      // title: "Build Your Personal Library",
+      // subtitle: "Create your wishlist and never miss a book you love",
+      // cta: "Start Collecting",
+      // link: "/wishlist"
+    }
+  ];
 
   const changeSlide = (newSlide: number) => {
     if (isTransitioning) return;
