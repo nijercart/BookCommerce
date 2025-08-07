@@ -91,7 +91,7 @@ const HeroSlider = () => {
         const nextSlide = (currentSlide + 1) % slides.length;
         changeSlide(nextSlide);
       }
-    }, 2500); // Changed to 2.5 seconds
+    }, 3000); // Changed to 3 seconds
 
     return () => clearInterval(timer);
   }, [currentSlide, slides.length, isTransitioning]);
@@ -194,10 +194,10 @@ const HeroSlider = () => {
       {/* Progress bar for current slide */}
       <div className="absolute bottom-0 left-0 w-full h-1 bg-white/20 z-10">
         <div 
-          className="h-full bg-white transition-all duration-[2500ms] ease-linear"
+          className="h-full bg-white transition-all duration-[3000ms] ease-linear"
           style={{ 
             width: isTransitioning ? '0%' : '100%',
-            transitionDuration: isTransitioning ? '0ms' : '2500ms'
+            transitionDuration: isTransitioning ? '0ms' : '3000ms'
           }}
         />
       </div>
