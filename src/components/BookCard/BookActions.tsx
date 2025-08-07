@@ -17,15 +17,15 @@ export function BookActions({ book, cartQuantity, onAddToCart }: BookActionsProp
     <div className="flex gap-2 w-full">
       <Button 
         size="sm" 
-        variant={cartQuantity > 0 ? "default" : "outline"}
+        variant="outline"
         onClick={(e) => {
           e.stopPropagation();
           onAddToCart();
         }}
         disabled={isOutOfStock}
-        className="flex-1 text-xs font-medium h-9 border-0 shadow-sm hover:shadow-md transition-all duration-200"
+        className="flex-1 text-xs font-medium h-8 px-3 bg-white hover:bg-gray-50 border border-gray-200 text-gray-700"
       >
-        <ShoppingCart className="h-3.5 w-3.5 mr-1.5" />
+        <ShoppingCart className="h-3.5 w-3.5 mr-1" />
         {isOutOfStock ? "Out of Stock" : 
          cartQuantity > 0 ? `In Cart (${cartQuantity})` : "Add to Cart"}
       </Button>
@@ -34,7 +34,7 @@ export function BookActions({ book, cartQuantity, onAddToCart }: BookActionsProp
         book={book}
         variant="default"
         size="sm"
-        className="flex-1 text-xs font-medium h-9 bg-primary text-primary-foreground hover:bg-primary-hover border-0 shadow-sm hover:shadow-md transition-all duration-200"
+        className="flex-1 text-xs font-medium h-8 px-3 bg-orange-500 hover:bg-orange-600 text-white border-0"
       />
     </div>
   );
