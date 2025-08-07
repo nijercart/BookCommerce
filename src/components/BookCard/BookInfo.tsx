@@ -11,6 +11,19 @@ interface BookInfoProps {
   description?: string;
 }
 
+
+import { Badge } from "@/components/ui/badge";
+import { CardTitle } from "@/components/ui/card";
+import { Star } from "lucide-react";
+
+interface BookInfoProps {
+  condition: "new" | "old";
+  rating: number;
+  title: string;
+  author: string;
+  description?: string;
+}
+
 export function BookInfo({ condition, rating, title, author, description }: BookInfoProps) {
   return (
     <div className="space-y-2">
@@ -41,3 +54,4 @@ export function BookInfo({ condition, rating, title, author, description }: Book
     </div>
   );
 }
+
