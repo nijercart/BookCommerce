@@ -57,15 +57,11 @@ const Payment = () => {
     }
   ];
 
-  // Calculate totals - moved to separate functions for consistency
+  // Calculate totals - removed tax calculation
   const calculateSubtotal = () => getTotalPrice();
   const calculateDeliveryCharge = () => {
     const subtotal = calculateSubtotal();
     return subtotal > 1000 ? 0 : 60;
-  };
-  const calculateTax = () => {
-    const subtotal = calculateSubtotal();
-    return subtotal * 0.08; // 8% tax
   };
   const calculateDiscount = () => {
     if (!appliedPromo) return 0;
@@ -80,9 +76,8 @@ const Payment = () => {
   const calculateFinalTotal = () => {
     const subtotal = calculateSubtotal();
     const deliveryCharge = calculateDeliveryCharge();
-    const tax = calculateTax();
     const discount = calculateDiscount();
-    return subtotal + deliveryCharge + tax - discount;
+    return subtotal + deliveryCharge - discount;
   };
 
   const handleSubmit = async () => {
@@ -133,10 +128,9 @@ const Payment = () => {
     });
 
     try {
-      // Calculate totals using the same functions
+      // Calculate totals using the same functions (without tax)
       const subtotal = calculateSubtotal();
       const deliveryCharge = calculateDeliveryCharge();
-      const tax = calculateTax();
       const discount = calculateDiscount();
       const totalAmount = calculateFinalTotal();
 
@@ -487,11 +481,6 @@ const Payment = () => {
                     <span className={calculateDeliveryCharge() === 0 ? "text-emerald-600 font-medium" : "font-medium"}>
                       {calculateDeliveryCharge() === 0 ? "Free" : `৳${calculateDeliveryCharge().toFixed(2)}`}
                     </span>
-                  </div>
-                  
-                  <div className="flex justify-between items-center py-2">
-                    <span className="text-muted-foreground">Tax (8%)</span>
-                    <span className="font-medium">৳{calculateTax().toFixed(2)}</span>
                   </div>
 
                   {appliedPromo && (
