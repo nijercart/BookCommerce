@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -8,8 +7,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Separator } from "@/components/ui/separator";
-import { ArrowLeft, MapPin, CreditCard, Truck, CheckCircle, ShoppingBag } from "lucide-react";
-import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import { ArrowLeft, MapPin, CreditCard, Truck, CheckCircle, ShoppingBag, Tag } from "lucide-react";
+import { Link, useNavigate, useSearchParams, useLocation } from "react-router-dom";
 import { useCartStore } from "@/lib/cartStore";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
@@ -36,11 +35,15 @@ interface CartItem {
 
 const Payment = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [searchParams] = useSearchParams();
   const isBuyNowMode = searchParams.get('mode') === 'buynow';
   const { items: cartItems, getTotalPrice, clearCart } = useCartStore();
   const { user } = useAuth();
   const { toast } = useToast();
+
+  // Get applied promo from cart page
+  const appliedPromoFromCart = location.state?.appliedPromo || null;
 
   const [shippingAddress, setShippingAddress] = useState<ShippingAddress>({
     name: '',
@@ -52,9 +55,9 @@ const Payment = () => {
   const [transactionId, setTransactionId] = useState('');
   const [orderNotes, setOrderNotes] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [discountCode, setDiscountCode] = useState('');
-  const [discountAmount, setDiscountAmount] = useState(0);
-  const [isDiscountApplied, setIsDiscountApplied] = useState(false);
+  const [promoCode, setPromoCode] = useState('');
+  const [appliedPromo, setAppliedPromo] = useState<any>(appliedPromoFromCart);
+  const [isApplyingPromo, setIsApplyingPromo] = useState(false);
   const [buyNowItem, setBuyNowItem] = useState<CartItem | null>(null);
 
   // Get items to process (either cart items or buy now item)
@@ -89,33 +92,84 @@ const Payment = () => {
     }
   }, [user, cartItems.length, navigate, isBuyNowMode]);
 
-  const promoCodes = [
-    { code: 'SAVE10', discount: 10 },
-    { code: 'FREESHIP', discount: 5 },
-  ];
-
-  const calculateDeliveryCharge = () => {
-    return 60;
-  };
-
-  const applyDiscount = () => {
-    const promo = promoCodes.find((p) => p.code === discountCode);
-    if (promo) {
-      setDiscountAmount(promo.discount);
-      setIsDiscountApplied(true);
+  const applyPromoCode = async () => {
+    if (!promoCode.trim()) {
       toast({
-        title: "Discount Applied! ",
-        description: `You have received ${promo.discount}% discount.`,
-      });
-    } else {
-      setDiscountAmount(0);
-      setIsDiscountApplied(false);
-      toast({
-        title: "Invalid code",
-        description: "The discount code you entered is not valid.",
+        title: "Please enter a promo code",
         variant: "destructive"
       });
+      return;
     }
+
+    setIsApplyingPromo(true);
+    
+    try {
+      const { data, error } = await supabase
+        .from('promo_codes')
+        .select('*')
+        .eq('code', promoCode.toUpperCase())
+        .eq('status', 'active');
+
+      if (error || !data || data.length === 0) {
+        toast({
+          title: "Invalid promo code",
+          description: "Please check your code and try again.",
+          variant: "destructive"
+        });
+        return;
+      }
+
+      const promo = data[0];
+
+      // Check if promo code is still valid
+      const now = new Date();
+      if (promo.valid_until && new Date(promo.valid_until) < now) {
+        toast({
+          title: "Promo code expired",
+          description: "This promo code has expired.",
+          variant: "destructive"
+        });
+        return;
+      }
+
+      // Check usage limit
+      if (promo.usage_limit && promo.used_count >= promo.usage_limit) {
+        toast({
+          title: "Promo code limit reached",
+          description: "This promo code has reached its usage limit.",
+          variant: "destructive"
+        });
+        return;
+      }
+
+      setAppliedPromo(promo);
+      toast({
+        title: "Promo code applied!",
+        description: `You saved ${promo.discount_type === 'percentage' ? `${promo.discount_value}%` : `৳${promo.discount_value}`}`,
+      });
+    } catch (error) {
+      console.error('Error applying promo code:', error);
+      toast({
+        title: "Error applying promo code",
+        description: "Please try again.",
+        variant: "destructive"
+      });
+    } finally {
+      setIsApplyingPromo(false);
+    }
+  };
+
+  const removePromoCode = () => {
+    setAppliedPromo(null);
+    setPromoCode("");
+    toast({
+      title: "Promo code removed",
+    });
+  };
+
+  const calculateDeliveryCharge = () => {
+    const subtotal = calculateSubtotal();
+    return subtotal > 1000 ? 0 : 60;
   };
 
   const calculateSubtotal = () => {
@@ -126,17 +180,21 @@ const Payment = () => {
   };
 
   const calculateDiscount = () => {
+    if (!appliedPromo) return 0;
+    
     const subtotal = calculateSubtotal();
-    const discount = isDiscountApplied ? (subtotal * discountAmount) / 100 : 0;
-    return discount;
+    if (appliedPromo.discount_type === 'percentage') {
+      return subtotal * (appliedPromo.discount_value / 100);
+    } else {
+      return Math.min(appliedPromo.discount_value, subtotal);
+    }
   };
 
   const calculateFinalTotal = () => {
     const subtotal = calculateSubtotal();
     const deliveryCharge = calculateDeliveryCharge();
     const discount = calculateDiscount();
-    const total = subtotal + deliveryCharge - discount;
-    return total;
+    return subtotal + deliveryCharge - discount;
   };
 
   const handleSubmit = async () => {
@@ -487,10 +545,12 @@ const Payment = () => {
                     <span className="font-semibold">৳{calculateDeliveryCharge().toFixed(2)}</span>
                   </div>
                   
-                  <div className="flex justify-between">
-                    <span className="text-muted-foreground">Discount:</span>
-                    <span className="font-semibold">- ৳{calculateDiscount().toFixed(2)}</span>
-                  </div>
+                  {appliedPromo && (
+                    <div className="flex justify-between text-green-600">
+                      <span>Discount ({appliedPromo.discount_type === 'percentage' ? `${appliedPromo.discount_value}%` : `৳${appliedPromo.discount_value}`})</span>
+                      <span>-৳{calculateDiscount().toFixed(2)}</span>
+                    </div>
+                  )}
                   
                   <Separator />
                   
@@ -501,24 +561,48 @@ const Payment = () => {
                 </CardContent>
               </Card>
 
-              {/* Discount Code */}
+              {/* Promo Code Section */}
               <Card className="space-y-4">
                 <CardHeader>
-                  <CardTitle>Apply Discount Code</CardTitle>
+                  <CardTitle>Apply Promo Code</CardTitle>
                 </CardHeader>
                 
-                <CardContent className="grid gap-4">
-                  <div className="flex items-center">
-                    <Input 
-                      type="text" 
-                      placeholder="Discount Code" 
-                      value={discountCode}
-                      onChange={(e) => setDiscountCode(e.target.value)}
-                    />
-                    <Button size="sm" className="ml-2" onClick={applyDiscount}>Apply</Button>
-                  </div>
-                  {isDiscountApplied && (
-                    <Badge variant="outline">Discount Applied</Badge>
+                <CardContent className="space-y-3">
+                  {!appliedPromo ? (
+                    <div className="flex gap-2">
+                      <Input
+                        placeholder="Enter promo code"
+                        value={promoCode}
+                        onChange={(e) => setPromoCode(e.target.value.toUpperCase())}
+                        className="h-9"
+                      />
+                      <Button 
+                        onClick={applyPromoCode}
+                        disabled={isApplyingPromo}
+                        size="sm"
+                        variant="outline"
+                      >
+                        <Tag className="h-4 w-4 mr-1" />
+                        {isApplyingPromo ? "Applying..." : "Apply"}
+                      </Button>
+                    </div>
+                  ) : (
+                    <div className="flex items-center justify-between p-3 bg-green-50 border border-green-200 rounded-lg">
+                      <div className="flex items-center gap-2">
+                        <Tag className="h-4 w-4 text-green-600" />
+                        <span className="text-sm font-medium text-green-800">
+                          {appliedPromo.code}
+                        </span>
+                      </div>
+                      <Button 
+                        onClick={removePromoCode}
+                        size="sm"
+                        variant="ghost"
+                        className="text-green-600 hover:text-green-800"
+                      >
+                        Remove
+                      </Button>
+                    </div>
                   )}
                 </CardContent>
               </Card>
