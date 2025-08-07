@@ -158,12 +158,12 @@ const HeroSlider = () => {
           <div className={`transition-all duration-500 delay-200 ${
             isTransitioning ? 'opacity-0 translate-y-4' : 'opacity-100 translate-y-0'
           }`}>
-            <Button asChild variant="hero" size="lg" className="text-base md:text-lg px-6 md:px-8 hover:scale-105 transition-transform duration-200">
+            {/* <Button asChild variant="hero" size="lg" className="text-base md:text-lg px-6 md:px-8 hover:scale-105 transition-transform duration-200">
               <Link to={slides[currentSlide % slides.length]?.link || "/books"}>
                 <ShoppingBag className="mr-2 h-4 w-4 md:h-5 md:w-5" />
                 {slides[currentSlide % slides.length]?.cta || "Browse Books"}
               </Link>
-            </Button>
+            </Button> */}
           </div>
         </div>
 
