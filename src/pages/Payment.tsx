@@ -441,15 +441,15 @@ const Payment = () => {
                 <RadioGroup onValueChange={setPaymentMethod}>
                   <div className="flex items-center space-x-2">
                     <RadioGroupItem value="bkash" id="bkash" className="peer h-4 w-4 shrink-0 rounded-full border border-primary ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50" />
-                    <Label htmlFor="bkash">bKash</Label>
+                    <Label htmlFor="bkash">bKash 01825929393</Label>
                   </div>
                   <div className="flex items-center space-x-2">
                     <RadioGroupItem value="nagad" id="nagad" className="peer h-4 w-4 shrink-0 rounded-full border border-primary ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50" />
-                    <Label htmlFor="nagad">Nagad</Label>
+                    <Label htmlFor="nagad">Nagad 01825929393</Label>
                   </div>
                   <div className="flex items-center space-x-2">
                     <RadioGroupItem value="rocket" id="rocket" className="peer h-4 w-4 shrink-0 rounded-full border border-primary ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50" />
-                    <Label htmlFor="rocket">Rocket</Label>
+                    <Label htmlFor="rocket">Rocket 01825929393</Label>
                   </div>
                 </RadioGroup>
                 
