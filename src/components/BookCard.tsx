@@ -120,10 +120,12 @@ export function BookCard(book: Book) {
           />
           
           <div className="flex items-center justify-between px-3 pb-1">
-            <div className="font-bold text-lg text-foreground">
-              ৳{book.price.toFixed(2)}
+            <div className="flex flex-col sm:flex-row sm:items-center sm:gap-2">
+              <div className="font-bold text-lg text-foreground">
+                ৳{book.price.toFixed(2)}
+              </div>
               {hasDiscount && (
-                <span className="ml-2 text-sm text-muted-foreground line-through font-normal">
+                <span className="text-sm text-muted-foreground line-through font-normal">
                   ৳{book.originalPrice?.toFixed(2)}
                 </span>
               )}
