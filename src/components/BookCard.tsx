@@ -91,8 +91,7 @@ export function BookCard(book: Book) {
       onWishlistToggle={handleWishlistToggle}
     >
       <DialogTrigger asChild>
-        <Card className="flex flex-col justify-between h-full min-h-[500px] cursor-pointer group relative bg-card border border-border hover:shadow-lg transition-all duration-200">
-          
+        <Card className="flex flex-col justify-between w-full h-full cursor-pointer group relative bg-card border border-border hover:shadow-lg transition-all duration-200">
           <BookBadges 
             isPopular={book.isPopular} 
             hasDiscount={hasDiscount} 
