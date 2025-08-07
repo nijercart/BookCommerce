@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -9,6 +10,7 @@ import { useWishlistStore } from "@/lib/wishlistStore";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
 import { Book } from "@/lib/bookData";
+import { BuyNowButton } from "./BuyNowButton";
 
 export function BookCard(book: Book) {
   const { addItem, getItemQuantity } = useCartStore();
@@ -161,19 +163,28 @@ export function BookCard(book: Book) {
               )}
             </div>
             
-            <Button 
-              size="sm" 
-              variant={cartQuantity > 0 ? "accent" : "default"}
-              onClick={(e) => {
-                e.stopPropagation();
-                handleAddToCart();
-              }}
-              disabled={cartQuantity >= book.inStock}
-              className="w-full text-xs font-medium"
-            >
-              {cartQuantity >= book.inStock ? "Out of Stock" : 
-               cartQuantity > 0 ? `Added (${cartQuantity})` : "Add to Cart"}
-            </Button>
+            <div className="flex gap-2 w-full">
+              <Button 
+                size="sm" 
+                variant={cartQuantity > 0 ? "accent" : "default"}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleAddToCart();
+                }}
+                disabled={cartQuantity >= book.inStock}
+                className="flex-1 text-xs font-medium"
+              >
+                {cartQuantity >= book.inStock ? "Out of Stock" : 
+                 cartQuantity > 0 ? `Added (${cartQuantity})` : "Add to Cart"}
+              </Button>
+              
+              <BuyNowButton 
+                book={book}
+                variant="secondary"
+                size="sm"
+                className="flex-1 text-xs font-medium"
+              />
+            </div>
           </CardFooter>
         </Card>
       </DialogTrigger>
@@ -274,6 +285,12 @@ export function BookCard(book: Book) {
                   {cartQuantity >= book.inStock ? "Out of Stock" : 
                    cartQuantity > 0 ? `In Cart (${cartQuantity})` : "Add to Cart"}
                 </Button>
+                
+                <BuyNowButton 
+                  book={book}
+                  variant="outline"
+                  className="flex-1"
+                />
                 
                 <Button 
                   variant="outline"
