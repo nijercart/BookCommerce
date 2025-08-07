@@ -108,33 +108,33 @@ const ModernHero = () => {
 
       {/* Content */}
       <div className="relative h-full flex items-center">
-        <div className="container mx-auto px-4 md:px-8">
-          <div className="max-w-2xl text-left">
+        <div className="container mx-auto px-4 sm:px-6 md:px-8">
+          <div className="max-w-4xl text-left">
             
 
             {/* Main Heading */}
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 animate-fade-in bg-gradient-to-r from-foreground to-foreground/80 bg-clip-text text-transparent">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold mb-4 sm:mb-6 animate-fade-in bg-gradient-to-r from-foreground to-foreground/80 bg-clip-text text-transparent leading-tight">
               Discover Your Next
               <span className="block text-primary">Great Read</span>
             </h1>
 
             {/* Subtitle */}
-            <p className="text-lg md:text-xl text-muted-foreground mb-8 animate-fade-in leading-relaxed">
+            <p className="text-sm sm:text-base md:text-lg lg:text-xl text-muted-foreground mb-6 sm:mb-8 animate-fade-in leading-relaxed max-w-2xl">
               Explore thousands of books from classic literature to modern bestsellers. 
               Find your perfect book and enjoy fast, reliable delivery.
             </p>
 
             {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row gap-4 animate-fade-in">
-              <Button size="lg" className="group shadow-lg" asChild>
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 animate-fade-in">
+              <Button size="lg" className="group shadow-lg w-full sm:w-auto" asChild>
                 <Link to="/books">
-                  <BookOpen className="mr-2 h-5 w-5" />
+                  <BookOpen className="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
                   Browse Collection
-                  <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                  <ArrowRight className="ml-2 h-3 w-3 sm:h-4 sm:w-4 transition-transform group-hover:translate-x-1" />
                 </Link>
               </Button>
               
-              <Button size="lg" variant="outline" className="backdrop-blur-sm bg-background/50 border-border/50" asChild>
+              <Button size="lg" variant="outline" className="backdrop-blur-sm bg-background/50 border-border/50 w-full sm:w-auto" asChild>
                 <Link to="/request">
                   Request a Book
                 </Link>
@@ -142,18 +142,18 @@ const ModernHero = () => {
             </div>
 
             {/* Stats */}
-            <div className="grid grid-cols-3 gap-6 mt-12 animate-fade-in">
+            <div className="grid grid-cols-3 gap-3 sm:gap-6 mt-8 sm:mt-12 animate-fade-in">
               <div className="text-center sm:text-left">
-                <div className="text-2xl md:text-3xl font-bold text-primary">10k+</div>
-                <div className="text-sm text-muted-foreground">Books Available</div>
+                <div className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-primary">10k+</div>
+                <div className="text-xs sm:text-sm text-muted-foreground">Books Available</div>
               </div>
               <div className="text-center sm:text-left">
-                <div className="text-2xl md:text-3xl font-bold text-primary">5k+</div>
-                <div className="text-sm text-muted-foreground">Happy Customers</div>
+                <div className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-primary">5k+</div>
+                <div className="text-xs sm:text-sm text-muted-foreground">Happy Customers</div>
               </div>
               <div className="text-center sm:text-left">
-                <div className="text-2xl md:text-3xl font-bold text-primary">24h</div>
-                <div className="text-sm text-muted-foreground">Fast Delivery</div>
+                <div className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-primary">24h</div>
+                <div className="text-xs sm:text-sm text-muted-foreground">Fast Delivery</div>
               </div>
             </div>
           </div>

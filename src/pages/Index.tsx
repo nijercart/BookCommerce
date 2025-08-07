@@ -151,46 +151,46 @@ const Index = () => {
       <HeroSlider />
       
       {/* Quick Navigation Bar */}
-      <section className="py-6 md:py-8 bg-gradient-to-r from-primary/5 via-secondary/10 to-accent/5 border-b border-border/30">
-        <div className="max-w-screen-2xl mx-auto px-6">
-          <div className="flex flex-wrap justify-center items-center gap-4 md:gap-8">
+      <section className="py-4 sm:py-6 md:py-8 bg-gradient-to-r from-primary/5 via-secondary/10 to-accent/5 border-b border-border/30">
+        <div className="max-w-screen-2xl mx-auto px-4 sm:px-6">
+          <div className="flex flex-wrap justify-center items-center gap-2 sm:gap-4 md:gap-8">
             <Link 
               to="/books?category=fiction" 
-              className="group relative bg-background/80 backdrop-blur-sm hover:bg-primary/10 rounded-xl px-4 py-3 md:px-6 md:py-4 transition-all duration-300 hover:scale-105 shadow-sm hover:shadow-md border border-border/50 hover:border-primary/30"
+              className="group relative bg-background/80 backdrop-blur-sm hover:bg-primary/10 rounded-lg sm:rounded-xl px-3 py-2 sm:px-4 sm:py-3 md:px-6 md:py-4 transition-all duration-300 hover:scale-105 shadow-sm hover:shadow-md border border-border/50 hover:border-primary/30 min-w-0 flex-shrink-0"
             >
-              <div className="flex items-center gap-2">
-                <div className="w-2 h-2 bg-primary rounded-full group-hover:scale-125 transition-transform"></div>
-                <span className="text-sm md:text-base font-medium text-foreground group-hover:text-primary transition-colors">Fiction</span>
+              <div className="flex items-center gap-1.5 sm:gap-2">
+                <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-primary rounded-full group-hover:scale-125 transition-transform"></div>
+                <span className="text-xs sm:text-sm md:text-base font-medium text-foreground group-hover:text-primary transition-colors">Fiction</span>
               </div>
             </Link>
             
             <Link 
               to="/books?category=non-fiction" 
-              className="group relative bg-background/80 backdrop-blur-sm hover:bg-accent/10 rounded-xl px-4 py-3 md:px-6 md:py-4 transition-all duration-300 hover:scale-105 shadow-sm hover:shadow-md border border-border/50 hover:border-accent/30"
+              className="group relative bg-background/80 backdrop-blur-sm hover:bg-accent/10 rounded-lg sm:rounded-xl px-3 py-2 sm:px-4 sm:py-3 md:px-6 md:py-4 transition-all duration-300 hover:scale-105 shadow-sm hover:shadow-md border border-border/50 hover:border-accent/30 min-w-0 flex-shrink-0"
             >
-              <div className="flex items-center gap-2">
-                <div className="w-2 h-2 bg-accent rounded-full group-hover:scale-125 transition-transform"></div>
-                <span className="text-sm md:text-base font-medium text-foreground group-hover:text-accent transition-colors">Non-Fiction</span>
+              <div className="flex items-center gap-1.5 sm:gap-2">
+                <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-accent rounded-full group-hover:scale-125 transition-transform"></div>
+                <span className="text-xs sm:text-sm md:text-base font-medium text-foreground group-hover:text-accent transition-colors">Non-Fiction</span>
               </div>
             </Link>
             
             <Link 
               to="/books?category=academic" 
-              className="group relative bg-background/80 backdrop-blur-sm hover:bg-secondary/10 rounded-xl px-4 py-3 md:px-6 md:py-4 transition-all duration-300 hover:scale-105 shadow-sm hover:shadow-md border border-border/50 hover:border-secondary/30"
+              className="group relative bg-background/80 backdrop-blur-sm hover:bg-secondary/10 rounded-lg sm:rounded-xl px-3 py-2 sm:px-4 sm:py-3 md:px-6 md:py-4 transition-all duration-300 hover:scale-105 shadow-sm hover:shadow-md border border-border/50 hover:border-secondary/30 min-w-0 flex-shrink-0"
             >
-              <div className="flex items-center gap-2">
-                <div className="w-2 h-2 bg-secondary rounded-full group-hover:scale-125 transition-transform"></div>
-                <span className="text-sm md:text-base font-medium text-foreground group-hover:text-secondary transition-colors">Academic</span>
+              <div className="flex items-center gap-1.5 sm:gap-2">
+                <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-secondary rounded-full group-hover:scale-125 transition-transform"></div>
+                <span className="text-xs sm:text-sm md:text-base font-medium text-foreground group-hover:text-secondary transition-colors">Academic</span>
               </div>
             </Link>
             
             <Link 
               to="/books?category=children" 
-              className="group relative bg-background/80 backdrop-blur-sm hover:bg-primary/10 rounded-xl px-4 py-3 md:px-6 md:py-4 transition-all duration-300 hover:scale-105 shadow-sm hover:shadow-md border border-border/50 hover:border-primary/30"
+              className="group relative bg-background/80 backdrop-blur-sm hover:bg-primary/10 rounded-lg sm:rounded-xl px-3 py-2 sm:px-4 sm:py-3 md:px-6 md:py-4 transition-all duration-300 hover:scale-105 shadow-sm hover:shadow-md border border-border/50 hover:border-primary/30 min-w-0 flex-shrink-0"
             >
-              <div className="flex items-center gap-2">
-                <div className="w-2 h-2 bg-primary rounded-full group-hover:scale-125 transition-transform"></div>
-                <span className="text-sm md:text-base font-medium text-foreground group-hover:text-primary transition-colors whitespace-nowrap">Children's</span>
+              <div className="flex items-center gap-1.5 sm:gap-2">
+                <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-primary rounded-full group-hover:scale-125 transition-transform"></div>
+                <span className="text-xs sm:text-sm md:text-base font-medium text-foreground group-hover:text-primary transition-colors whitespace-nowrap">Children's</span>
               </div>
             </Link>
           </div>
@@ -198,22 +198,22 @@ const Index = () => {
       </section>
 
       {/* Featured Books */}
-      <section className="py-16 md:py-20 relative overflow-hidden">
+      <section className="py-12 sm:py-16 md:py-20 relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5"></div>
-        <div className="max-w-screen-2xl mx-auto px-6 relative">
-          <div className="text-center mb-12 md:mb-16">
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-4 bg-gradient-to-r from-foreground to-foreground/80 bg-clip-text">
+        <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 relative">
+          <div className="text-center mb-8 sm:mb-12 md:mb-16">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-3 sm:mb-4 bg-gradient-to-r from-foreground to-foreground/80 bg-clip-text">
               Featured Books
             </h2>
-            <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+            <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed px-4">
               Discover our carefully curated selection of bestsellers, new releases, and hidden gems
             </p>
-            <div className="flex justify-center mt-8">
-              <Button size="lg" className="group bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary shadow-lg hover:shadow-xl transition-all" asChild>
+            <div className="flex justify-center mt-6 sm:mt-8">
+              <Button size="lg" className="group bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary shadow-lg hover:shadow-xl transition-all text-sm sm:text-base" asChild>
                 <Link to="/books">
-                  <Search className="mr-2 h-5 w-5" />
+                  <Search className="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
                   Browse All Books
-                  <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                  <ArrowRight className="ml-2 h-4 w-4 sm:h-5 sm:w-5 group-hover:translate-x-1 transition-transform" />
                 </Link>
               </Button>
             </div>

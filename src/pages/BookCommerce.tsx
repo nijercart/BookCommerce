@@ -249,40 +249,40 @@ const BookCommerce = () => {
         </div>
         
         {/* Book Details */}
-        <div className="p-3 space-y-2">
+        <div className="p-2 sm:p-3 space-y-1.5 sm:space-y-2">
           <div className="flex items-center justify-between">
             <Badge 
               variant={product.condition === "new" ? "default" : "secondary"} 
-              className="text-[10px] px-2 py-0.5"
+              className="text-[9px] sm:text-[10px] px-1.5 sm:px-2 py-0.5"
             >
               {product.condition === "new" ? "New" : "Pre-owned"}
             </Badge>
-            <div className="flex items-center gap-1">
-              <Star className="h-3 w-3 fill-rating-star text-rating-star" />
-              <span className="text-xs font-medium">4.0</span>
+            <div className="flex items-center gap-0.5 sm:gap-1">
+              <Star className="h-2.5 w-2.5 sm:h-3 sm:w-3 fill-rating-star text-rating-star" />
+              <span className="text-[10px] sm:text-xs font-medium">4.0</span>
             </div>
           </div>
           
-          <h3 className="text-sm font-semibold line-clamp-2 leading-tight group-hover:text-primary transition-colors">
+          <h3 className="text-xs sm:text-sm font-semibold line-clamp-2 leading-tight group-hover:text-primary transition-colors">
             {product.title}
           </h3>
           
-          <p className="text-xs text-muted-foreground line-clamp-1">{product.author}</p>
+          <p className="text-[10px] sm:text-xs text-muted-foreground line-clamp-1">{product.author}</p>
           
           {product.description && (
-            <p className="text-xs text-muted-foreground line-clamp-2 leading-relaxed">
+            <p className="text-[10px] sm:text-xs text-muted-foreground line-clamp-2 leading-relaxed hidden sm:block">
               {product.description}
             </p>
           )}
           
-          <div className="flex items-center gap-2">
-            <span className="text-lg font-bold text-foreground">৳{product.price}</span>
+          <div className="flex items-center gap-1 sm:gap-2">
+            <span className="text-sm sm:text-base md:text-lg font-bold text-foreground">৳{product.price}</span>
             {hasDiscount && (
-              <span className="text-sm text-muted-foreground line-through">৳{product.original_price}</span>
+              <span className="text-xs sm:text-sm text-muted-foreground line-through">৳{product.original_price}</span>
             )}
           </div>
           
-          <div className="flex gap-2">
+          <div className="flex flex-col sm:flex-row gap-1 sm:gap-2">
             <Button 
               size="sm" 
               variant={cartQuantity > 0 ? "accent" : "default"}
@@ -291,7 +291,7 @@ const BookCommerce = () => {
                 handleAddToCart(product);
               }}
               disabled={cartQuantity >= product.stock_quantity}
-              className="flex-1 text-xs font-medium"
+              className="flex-1 text-[10px] sm:text-xs font-medium h-7 sm:h-8"
             >
               {cartQuantity >= product.stock_quantity ? "Out of Stock" : 
                cartQuantity > 0 ? `Added (${cartQuantity})` : "Add to Cart"}
@@ -301,7 +301,7 @@ const BookCommerce = () => {
               book={bookForBuyNow}
               variant="secondary"
               size="sm"
-              className="flex-1 text-xs font-medium"
+              className="flex-1 text-[10px] sm:text-xs font-medium h-7 sm:h-8"
             />
           </div>
         </div>
@@ -329,69 +329,69 @@ const BookCommerce = () => {
       <Header />
       
       {/* Hero Section */}
-      <section className="bg-gradient-primary text-primary-foreground py-20">
+      <section className="bg-gradient-primary text-primary-foreground py-12 sm:py-16 md:py-20">
         <div className="container mx-auto px-4 text-center">
-          <h1 className="text-4xl font-bold mb-4">Discover Your Next Great Read</h1>
-          <p className="text-xl text-primary-foreground/80 mb-8">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-3 sm:mb-4 leading-tight">Discover Your Next Great Read</h1>
+          <p className="text-base sm:text-lg md:text-xl text-primary-foreground/80 mb-6 sm:mb-8 max-w-2xl mx-auto px-4">
             Browse our extensive collection of new and pre-owned books
           </p>
           
           {/* Search Bar */}
-          <div className="max-w-md mx-auto relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+          <div className="max-w-sm sm:max-w-md mx-auto relative px-4">
+            <Search className="absolute left-7 sm:left-6 top-1/2 transform -translate-y-1/2 h-4 w-4 sm:h-5 sm:w-5 text-muted-foreground" />
             <Input
               type="search"
               placeholder="Search by title, author, or genre..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-10 h-12 text-lg bg-background text-foreground"
+              className="pl-10 sm:pl-12 h-10 sm:h-12 text-sm sm:text-base md:text-lg bg-background text-foreground w-full"
             />
           </div>
         </div>
       </section>
 
       {/* Filters and Tabs */}
-      <section className="py-8 border-b">
+      <section className="py-4 sm:py-6 md:py-8 border-b">
         <div className="container mx-auto px-4">
-          <Tabs value={activeTab} onValueChange={setActiveTab} className="mb-6">
-            <TabsList className="grid w-full grid-cols-3 max-w-md mx-auto">
-              <TabsTrigger value="all">All Books</TabsTrigger>
-              <TabsTrigger value="new">New Books</TabsTrigger>
-              <TabsTrigger value="old">Pre-owned</TabsTrigger>
+          <Tabs value={activeTab} onValueChange={setActiveTab} className="mb-4 sm:mb-6">
+            <TabsList className="grid w-full grid-cols-3 max-w-sm sm:max-w-md mx-auto h-9 sm:h-10">
+              <TabsTrigger value="all" className="text-xs sm:text-sm">All Books</TabsTrigger>
+              <TabsTrigger value="new" className="text-xs sm:text-sm">New Books</TabsTrigger>
+              <TabsTrigger value="old" className="text-xs sm:text-sm">Pre-owned</TabsTrigger>
             </TabsList>
           </Tabs>
           
-          <div className="flex flex-wrap gap-4 items-center justify-between">
-            <div className="flex flex-wrap gap-4">
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 items-start sm:items-center justify-between">
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 w-full sm:w-auto">
               <Select value={selectedGenre} onValueChange={setSelectedGenre}>
-                <SelectTrigger className="w-[180px]">
-                  <Filter className="h-4 w-4 mr-2" />
+                <SelectTrigger className="w-full sm:w-[160px] md:w-[180px] h-9 text-sm">
+                  <Filter className="h-3 w-3 sm:h-4 sm:w-4 mr-2" />
                   <SelectValue placeholder="Select Category" />
                 </SelectTrigger>
                 <SelectContent>
                   {categories.map(category => (
-                    <SelectItem key={category} value={category}>{category}</SelectItem>
+                    <SelectItem key={category} value={category} className="text-sm">{category}</SelectItem>
                   ))}
                 </SelectContent>
               </Select>
               
               <Select value={sortBy} onValueChange={setSortBy}>
-                <SelectTrigger className="w-[180px]">
+                <SelectTrigger className="w-full sm:w-[160px] md:w-[180px] h-9 text-sm">
                   <SelectValue placeholder="Sort by" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="featured">Featured</SelectItem>
-                  <SelectItem value="price-low">Price: Low to High</SelectItem>
-                  <SelectItem value="price-high">Price: High to Low</SelectItem>
-                  <SelectItem value="rating">Highest Rated</SelectItem>
-                  <SelectItem value="title">Title A-Z</SelectItem>
-                  <SelectItem value="author">Author A-Z</SelectItem>
+                  <SelectItem value="featured" className="text-sm">Featured</SelectItem>
+                  <SelectItem value="price-low" className="text-sm">Price: Low to High</SelectItem>
+                  <SelectItem value="price-high" className="text-sm">Price: High to Low</SelectItem>
+                  <SelectItem value="rating" className="text-sm">Highest Rated</SelectItem>
+                  <SelectItem value="title" className="text-sm">Title A-Z</SelectItem>
+                  <SelectItem value="author" className="text-sm">Author A-Z</SelectItem>
                 </SelectContent>
               </Select>
             </div>
             
-            <div className="text-sm text-muted-foreground">
-              <Badge className="bg-accent/10 text-accent-foreground border-accent/20">
+            <div className="text-xs sm:text-sm text-muted-foreground w-full sm:w-auto flex justify-center sm:justify-end">
+              <Badge className="bg-accent/10 text-accent-foreground border-accent/20 text-xs">
                 {filteredProducts.length} books available
               </Badge>
             </div>
@@ -400,10 +400,10 @@ const BookCommerce = () => {
       </section>
 
       {/* Books Grid */}
-      <section className="py-12">
+      <section className="py-8 sm:py-10 md:py-12">
         <div className="container mx-auto px-4">
           {filteredProducts.length > 0 ? (
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 sm:gap-4 md:gap-6">
               {filteredProducts.map(product => (
                 <ProductCard key={product.id} product={product} />
               ))}
