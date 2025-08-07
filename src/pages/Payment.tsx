@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
@@ -58,6 +57,34 @@ const Payment = () => {
     }
   ];
 
+  // Calculate totals - moved to separate functions for consistency
+  const calculateSubtotal = () => getTotalPrice();
+  const calculateDeliveryCharge = () => {
+    const subtotal = calculateSubtotal();
+    return subtotal > 1000 ? 0 : 60;
+  };
+  const calculateTax = () => {
+    const subtotal = calculateSubtotal();
+    return subtotal * 0.08; // 8% tax
+  };
+  const calculateDiscount = () => {
+    if (!appliedPromo) return 0;
+    
+    const subtotal = calculateSubtotal();
+    if (appliedPromo.discount_type === 'percentage') {
+      return subtotal * (appliedPromo.discount_value / 100);
+    } else {
+      return Math.min(appliedPromo.discount_value, subtotal);
+    }
+  };
+  const calculateFinalTotal = () => {
+    const subtotal = calculateSubtotal();
+    const deliveryCharge = calculateDeliveryCharge();
+    const tax = calculateTax();
+    const discount = calculateDiscount();
+    return subtotal + deliveryCharge + tax - discount;
+  };
+
   const handleSubmit = async () => {
     if (!selectedMethod) {
       toast({
@@ -106,22 +133,12 @@ const Payment = () => {
     });
 
     try {
-      // Calculate totals
-      const subtotal = getTotalPrice();
-      const deliveryCharge = subtotal > 1000 ? 0 : 60;
-      const tax = subtotal * 0.08;
-      
-      // Calculate discount
-      let discount = 0;
-      if (appliedPromo) {
-        if (appliedPromo.discount_type === 'percentage') {
-          discount = subtotal * (appliedPromo.discount_value / 100);
-        } else {
-          discount = Math.min(appliedPromo.discount_value, subtotal);
-        }
-      }
-      
-      const totalAmount = subtotal + deliveryCharge + tax - discount;
+      // Calculate totals using the same functions
+      const subtotal = calculateSubtotal();
+      const deliveryCharge = calculateDeliveryCharge();
+      const tax = calculateTax();
+      const discount = calculateDiscount();
+      const totalAmount = calculateFinalTotal();
 
       // Create the order with transaction details
       const { data: orderData, error: orderError } = await supabase
@@ -462,52 +479,32 @@ const Payment = () => {
                 <div className="space-y-4">
                   <div className="flex justify-between items-center py-2">
                     <span className="text-muted-foreground">Subtotal ({getTotalItems()} items)</span>
-                    <span className="font-medium">৳{getTotalPrice().toFixed(2)}</span>
+                    <span className="font-medium">৳{calculateSubtotal().toFixed(2)}</span>
                   </div>
                   
                   <div className="flex justify-between items-center py-2">
                     <span className="text-muted-foreground">Delivery Charge</span>
-                    <span className={getTotalPrice() > 1000 ? "text-emerald-600 font-medium" : "font-medium"}>
-                      {getTotalPrice() > 1000 ? "Free" : "৳60.00"}
+                    <span className={calculateDeliveryCharge() === 0 ? "text-emerald-600 font-medium" : "font-medium"}>
+                      {calculateDeliveryCharge() === 0 ? "Free" : `৳${calculateDeliveryCharge().toFixed(2)}`}
                     </span>
                   </div>
                   
                   <div className="flex justify-between items-center py-2">
                     <span className="text-muted-foreground">Tax (8%)</span>
-                    <span className="font-medium">৳{(getTotalPrice() * 0.08).toFixed(2)}</span>
+                    <span className="font-medium">৳{calculateTax().toFixed(2)}</span>
                   </div>
 
                   {appliedPromo && (
                     <div className="flex justify-between items-center py-2">
                       <span className="text-green-600">Discount ({appliedPromo.discount_type === 'percentage' ? `${appliedPromo.discount_value}%` : `৳${appliedPromo.discount_value}`})</span>
-                      <span className="font-medium text-green-600">-৳{(() => {
-                        const subtotal = getTotalPrice();
-                        if (appliedPromo.discount_type === 'percentage') {
-                          return (subtotal * (appliedPromo.discount_value / 100)).toFixed(2);
-                        } else {
-                          return Math.min(appliedPromo.discount_value, subtotal).toFixed(2);
-                        }
-                      })()}</span>
+                      <span className="font-medium text-green-600">-৳{calculateDiscount().toFixed(2)}</span>
                     </div>
                   )}
                   
                   <div className="border-t pt-4">
                     <div className="flex justify-between items-center">
                       <span className="text-lg font-semibold">Total</span>
-                      <span className="text-2xl font-bold text-primary">৳{(() => {
-                        const subtotal = getTotalPrice();
-                        const deliveryCharge = subtotal > 1000 ? 0 : 60;
-                        const tax = subtotal * 0.08;
-                        let discount = 0;
-                        if (appliedPromo) {
-                          if (appliedPromo.discount_type === 'percentage') {
-                            discount = subtotal * (appliedPromo.discount_value / 100);
-                          } else {
-                            discount = Math.min(appliedPromo.discount_value, subtotal);
-                          }
-                        }
-                        return (subtotal + deliveryCharge + tax - discount).toFixed(2);
-                      })()}</span>
+                      <span className="text-2xl font-bold text-primary">৳{calculateFinalTotal().toFixed(2)}</span>
                     </div>
                   </div>
                 </div>
