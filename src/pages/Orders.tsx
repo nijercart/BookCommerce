@@ -187,9 +187,9 @@ const Orders = () => {
                   <p className="text-muted-foreground mb-6">
                     You haven't placed any orders yet. Start browsing our amazing book collection!
                   </p>
-                  <Button asChild variant="hero">
+                  {/* <Button asChild variant="hero">
                     <Link to="/books">Browse Books</Link>
-                  </Button>
+                  </Button> */}
                 </CardContent>
               </Card>
             ) : (
