@@ -130,7 +130,7 @@ const ModernHero = () => {
                 <Link to="/books">
                   <BookOpen className="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
                   Browse Collection
-                  <ArrowRight className="ml-2 h-3 w-3 sm:h-4 sm:w-4 transition-transform group-hover:translate-x-1" />
+                  <ArrowRight className="hidden sm:inline ml-2 h-3 w-3 sm:h-4 sm:w-4 transition-transform group-hover:translate-x-1" />
                 </Link>
               </Button>
               

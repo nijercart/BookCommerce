@@ -138,7 +138,7 @@ const HeroSlider = () => {
           size="icon"
           onClick={prevSlide}
           disabled={isTransitioning}
-          className="text-white hover:bg-white/20 backdrop-blur-sm transition-all duration-200 hover:scale-110 disabled:opacity-50"
+          className="hidden sm:flex text-white hover:bg-white/20 backdrop-blur-sm transition-all duration-200 hover:scale-110 disabled:opacity-50"
         >
           <ChevronLeft className="h-6 w-6" />
         </Button>
@@ -173,7 +173,7 @@ const HeroSlider = () => {
           size="icon"
           onClick={nextSlide}
           disabled={isTransitioning}
-          className="text-white hover:bg-white/20 backdrop-blur-sm transition-all duration-200 hover:scale-110 disabled:opacity-50"
+          className="hidden sm:flex text-white hover:bg-white/20 backdrop-blur-sm transition-all duration-200 hover:scale-110 disabled:opacity-50"
         >
           <ChevronRight className="h-6 w-6" />
         </Button>
