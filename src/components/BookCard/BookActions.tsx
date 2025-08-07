@@ -2,6 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { BuyNowButton } from "../BuyNowButton";
 import { Book } from "@/lib/bookData";
+import { ShoppingCart } from "lucide-react";
 
 interface BookActionsProps {
   book: Book;
@@ -22,17 +23,18 @@ export function BookActions({ book, cartQuantity, onAddToCart }: BookActionsProp
           onAddToCart();
         }}
         disabled={isOutOfStock}
-        className="flex-1 text-xs font-medium h-8"
+        className="flex-1 text-xs font-medium h-9 border-0 shadow-sm hover:shadow-md transition-all duration-200"
       >
+        <ShoppingCart className="h-3.5 w-3.5 mr-1.5" />
         {isOutOfStock ? "Out of Stock" : 
          cartQuantity > 0 ? `In Cart (${cartQuantity})` : "Add to Cart"}
       </Button>
       
       <BuyNowButton 
         book={book}
-        variant="secondary"
+        variant="default"
         size="sm"
-        className="flex-1 text-xs font-medium h-8"
+        className="flex-1 text-xs font-medium h-9 bg-primary text-primary-foreground hover:bg-primary-hover border-0 shadow-sm hover:shadow-md transition-all duration-200"
       />
     </div>
   );

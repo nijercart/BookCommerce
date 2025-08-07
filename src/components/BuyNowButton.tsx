@@ -14,7 +14,7 @@ interface BuyNowButtonProps {
   className?: string;
 }
 
-export function BuyNowButton({ book, variant = "secondary", size = "sm", className }: BuyNowButtonProps) {
+export function BuyNowButton({ book, variant = "default", size = "sm", className }: BuyNowButtonProps) {
   const [isLoading, setIsLoading] = useState(false);
   const { user } = useAuth();
   const { toast } = useToast();
@@ -70,7 +70,7 @@ export function BuyNowButton({ book, variant = "secondary", size = "sm", classNa
       disabled={book.inStock <= 0 || isLoading}
       className={className}
     >
-      <ShoppingBag className="h-4 w-4 mr-1" />
+      <ShoppingBag className="h-3.5 w-3.5 mr-1.5" />
       {isLoading ? "Processing..." : "Buy Now"}
     </Button>
   );
