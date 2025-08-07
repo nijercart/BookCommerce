@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -54,7 +55,7 @@ const Payment = () => {
   const [discountCode, setDiscountCode] = useState('');
   const [discountAmount, setDiscountAmount] = useState(0);
   const [isDiscountApplied, setIsDiscountApplied] = useState(false);
-  const [buyNowItem, setBuyNowItem] = useState(null);
+  const [buyNowItem, setBuyNowItem] = useState<CartItem | null>(null);
 
   // Get items to process (either cart items or buy now item)
   const getItemsToProcess = () => {
@@ -196,7 +197,7 @@ const Payment = () => {
           total_amount: totalAmount,
           status: 'pending',
           payment_method: paymentMethod,
-          shipping_address: shippingAddress,
+          shipping_address: shippingAddress as any, // Cast to any to satisfy Json type
           notes: `Transaction ID: ${transactionId}${orderNotes ? ` | Notes: ${orderNotes}` : ''}`
         })
         .select()
