@@ -160,7 +160,7 @@ export function BookRequestForm() {
           </div>
         </div>
         <div>
-          <CardTitle className="text-xl">Request a Book</CardTitle>
+          <CardTitle className="text-xl">Request US Book</CardTitle>
           <CardDescription className="text-sm">
             Let us help you find it!
           </CardDescription>
