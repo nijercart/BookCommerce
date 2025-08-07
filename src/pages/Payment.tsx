@@ -428,45 +428,56 @@ const Payment = () => {
               </CardContent>
             </Card>
 
-            {/* Payment Information */}
-            <Card className="space-y-4">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <CreditCard className="h-5 w-5" />
-                  Payment Method
-                </CardTitle>
-              </CardHeader>
-              
-              <CardContent>
-                <RadioGroup onValueChange={setPaymentMethod}>
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="bkash" id="bkash" className="peer h-4 w-4 shrink-0 rounded-full border border-primary ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50" />
-                    <Label htmlFor="bkash">bKash 01825929393</Label>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="nagad" id="nagad" className="peer h-4 w-4 shrink-0 rounded-full border border-primary ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50" />
-                    <Label htmlFor="nagad">Nagad 01825929393</Label>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="rocket" id="rocket" className="peer h-4 w-4 shrink-0 rounded-full border border-primary ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50" />
-                    <Label htmlFor="rocket">Rocket 01825929393</Label>
-                  </div>
-                </RadioGroup>
-                
-                <Separator className="my-4" />
-                
-                <div className="grid gap-2">
-                  <Label htmlFor="transactionId">Transaction ID</Label>
-                  <Input 
-                    type="text" 
-                    id="transactionId" 
-                    placeholder="Enter transaction ID" 
-                    value={transactionId}
-                    onChange={(e) => setTransactionId(e.target.value)}
-                  />
-                </div>
-              </CardContent>
-            </Card>
+           <Card className="space-y-4">
+  <CardHeader>
+    <CardTitle className="flex items-center gap-2 text-lg font-semibold">
+      <CreditCard className="h-5 w-5 text-primary" />
+      Payment Method
+    </CardTitle>
+  </CardHeader>
+
+  <CardContent className="space-y-4">
+    {/* Payment Options */}
+    <RadioGroup onValueChange={setPaymentMethod} className="space-y-3">
+      {[
+        { id: "bkash", label: "bKash", number: "01825929393" },
+        { id: "nagad", label: "Nagad", number: "01825929393" },
+        { id: "rocket", label: "Rocket", number: "01825929393" },
+      ].map(({ id, label, number }) => (
+        <div key={id} className="flex items-center gap-3 p-3 rounded-md border border-muted hover:border-primary transition-colors">
+          <RadioGroupItem
+            value={id}
+            id={id}
+            className="peer h-4 w-4 shrink-0 rounded-full border border-primary ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+          />
+          <Label htmlFor={id} className="text-sm font-medium cursor-pointer">
+            {label} <span className="text-muted-foreground text-xs ml-1">{number}</span>
+          </Label>
+        </div>
+      ))}
+    </RadioGroup>
+
+    <Separator />
+
+    {/* Transaction ID Field */}
+    <div className="grid gap-2">
+      <Label htmlFor="transactionId" className="text-sm font-medium">
+        Transaction ID
+      </Label>
+      <Input
+        type="text"
+        id="transactionId"
+        placeholder="Enter your transaction ID"
+        value={transactionId}
+        onChange={(e) => setTransactionId(e.target.value)}
+        className="focus-visible:ring-1 focus-visible:ring-primary"
+      />
+      <p className="text-xs text-muted-foreground">
+        Please complete the payment before placing the order.
+      </p>
+    </div>
+  </CardContent>
+</Card>
 
             {/* Additional Notes */}
             <Card className="space-y-4">
