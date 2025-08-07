@@ -589,7 +589,7 @@ const Payment = () => {
               {/* Promo Code Section */}
               <Card className="space-y-4">
                 <CardHeader>
-                  <CardTitle>Apply Promo Code</CardTitle>
+                  <CardTitle>Apply Coupon Code</CardTitle>
                 </CardHeader>
                 
                 <CardContent className="space-y-3">
