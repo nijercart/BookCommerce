@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Search, Filter, Heart, Star, ShoppingCart, BookOpen, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -210,16 +211,16 @@ const BookCommerce = () => {
     };
     
     return (
-      <div className="bg-card rounded-lg border border-border overflow-hidden transition-all duration-200 hover:shadow-card group relative">
+      <Card className="product-card h-full flex flex-col cursor-pointer group relative">
         {/* Badges */}
         <div className="absolute top-2 left-2 z-10 flex flex-col gap-1">
           {product.featured && (
-            <Badge className="bg-accent text-accent-foreground text-[10px] px-1.5 py-0.5">
+            <Badge className="sale-badge text-[10px] px-1.5 py-0.5">
               Popular
             </Badge>
           )}
           {hasDiscount && (
-            <Badge className="bg-destructive text-destructive-foreground text-[10px] px-1.5 py-0.5">
+            <Badge className="discount-badge text-[10px] px-1.5 py-0.5">
               -{discountPercent}%
             </Badge>
           )}
@@ -234,22 +235,22 @@ const BookCommerce = () => {
           <Heart className="h-3.5 w-3.5" />
         </Button>
         
-        {/* Book Image */}
-        <div className="aspect-[3/4] overflow-hidden bg-muted relative">
-          <img 
-            src={primaryImage} 
-            alt={product.title}
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-          />
-          {cartQuantity >= product.stock_quantity && (
-            <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
-              <Badge variant="destructive">Out of Stock</Badge>
-            </div>
-          )}
-        </div>
+        <CardHeader className="p-0 flex-shrink-0">
+          <div className="aspect-[3/4] overflow-hidden bg-muted rounded-t-lg relative">
+            <img 
+              src={primaryImage} 
+              alt={product.title}
+              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+            />
+            {cartQuantity >= product.stock_quantity && (
+              <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
+                <Badge variant="destructive">Out of Stock</Badge>
+              </div>
+            )}
+          </div>
+        </CardHeader>
         
-        {/* Book Details */}
-        <div className="p-3 space-y-2">
+        <CardContent className="p-3 space-y-2 flex-grow">
           <div className="flex items-center justify-between">
             <Badge 
               variant={product.condition === "new" ? "default" : "secondary"} 
@@ -263,9 +264,9 @@ const BookCommerce = () => {
             </div>
           </div>
           
-          <h3 className="text-sm font-semibold line-clamp-2 leading-tight group-hover:text-primary transition-colors">
+          <CardTitle className="text-sm font-semibold line-clamp-2 leading-tight group-hover:text-primary transition-colors">
             {product.title}
-          </h3>
+          </CardTitle>
           
           <p className="text-xs text-muted-foreground line-clamp-1">{product.author}</p>
           
@@ -274,15 +275,17 @@ const BookCommerce = () => {
               {product.description}
             </p>
           )}
-          
-          <div className="flex items-center gap-2">
-            <span className="text-lg font-bold text-foreground">৳{product.price}</span>
+        </CardContent>
+        
+        <CardFooter className="p-3 pt-0 flex flex-col gap-2 mt-auto">
+          <div className="flex items-center gap-2 w-full">
+            <span className="price-text text-lg font-bold">৳{product.price}</span>
             {hasDiscount && (
               <span className="text-sm text-muted-foreground line-through">৳{product.original_price}</span>
             )}
           </div>
           
-          <div className="flex gap-2">
+          <div className="flex gap-2 w-full">
             <Button 
               size="sm" 
               variant={cartQuantity > 0 ? "accent" : "default"}
@@ -304,8 +307,8 @@ const BookCommerce = () => {
               className="flex-1 text-xs font-medium"
             />
           </div>
-        </div>
-      </div>
+        </CardFooter>
+      </Card>
     );
   };
 
@@ -330,7 +333,7 @@ const BookCommerce = () => {
       
       {/* Hero Section */}
       <section className="bg-gradient-primary text-primary-foreground py-20">
-        <div className="container mx-auto px-4 text-center">
+        <div className="max-w-screen-2xl mx-auto px-6 text-center">
           <h1 className="text-4xl font-bold mb-4">Discover Your Next Great Read</h1>
           <p className="text-xl text-primary-foreground/80 mb-8">
             Browse our extensive collection of new and pre-owned books
@@ -352,7 +355,7 @@ const BookCommerce = () => {
 
       {/* Filters and Tabs */}
       <section className="py-8 border-b">
-        <div className="container mx-auto px-4">
+        <div className="max-w-screen-2xl mx-auto px-6">
           <Tabs value={activeTab} onValueChange={setActiveTab} className="mb-6">
             <TabsList className="grid w-full grid-cols-3 max-w-md mx-auto">
               <TabsTrigger value="all">All Books</TabsTrigger>
@@ -391,9 +394,7 @@ const BookCommerce = () => {
             </div>
             
             <div className="text-sm text-muted-foreground">
-              <Badge className="bg-accent/10 text-accent-foreground border-accent/20">
-                {filteredProducts.length} books available
-              </Badge>
+              Showing {filteredProducts.length} products
             </div>
           </div>
         </div>
@@ -401,7 +402,7 @@ const BookCommerce = () => {
 
       {/* Books Grid */}
       <section className="py-12">
-        <div className="container mx-auto px-4">
+        <div className="max-w-screen-2xl mx-auto px-6">
           {filteredProducts.length > 0 ? (
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
               {filteredProducts.map(product => (
@@ -426,18 +427,6 @@ const BookCommerce = () => {
                       Request a Book
                       <ArrowRight className="ml-2 h-4 w-4" />
                     </Link>
-                  </Button>
-                  <Button 
-                    size="lg"
-                    variant="outline" 
-                    className="w-full"
-                    onClick={() => {
-                      setSearchQuery("");
-                      setSelectedGenre("All Genres");
-                      setSortBy("featured");
-                    }}
-                  >
-                    Clear All Filters
                   </Button>
                 </div>
               </div>
