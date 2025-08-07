@@ -34,8 +34,8 @@ const HeroSlider = () => {
     }
   });
 
-  // Get the appropriate image for current device
-  const getImageForDevice = () => {
+  // Get all images for current device
+  const getImagesForDevice = () => {
     const width = window.innerWidth;
     let deviceType = 'desktop';
     
@@ -45,10 +45,11 @@ const HeroSlider = () => {
       deviceType = 'tablet';
     }
     
-    return heroImages.find(img => img.device_type === deviceType) || heroImages[0];
+    return heroImages.filter(img => img.device_type === deviceType);
   };
 
-  const currentImage = getImageForDevice();
+  const deviceImages = getImagesForDevice();
+  const currentImage = deviceImages.length > 0 ? deviceImages[currentSlide % deviceImages.length] : heroImages[0];
 
   const slides = [
     {
@@ -88,24 +89,27 @@ const HeroSlider = () => {
   useEffect(() => {
     const timer = setInterval(() => {
       if (!isTransitioning) {
-        const nextSlide = (currentSlide + 1) % slides.length;
+        const totalSlides = Math.max(slides.length, deviceImages.length);
+        const nextSlide = (currentSlide + 1) % totalSlides;
         changeSlide(nextSlide);
       }
     }, 3000); // Changed to 3 seconds
 
     return () => clearInterval(timer);
-  }, [currentSlide, slides.length, isTransitioning]);
+  }, [currentSlide, slides.length, deviceImages.length, isTransitioning]);
 
   const nextSlide = () => {
     if (!isTransitioning) {
-      const next = (currentSlide + 1) % slides.length;
+      const totalSlides = Math.max(slides.length, deviceImages.length);
+      const next = (currentSlide + 1) % totalSlides;
       changeSlide(next);
     }
   };
 
   const prevSlide = () => {
     if (!isTransitioning) {
-      const prev = (currentSlide - 1 + slides.length) % slides.length;
+      const totalSlides = Math.max(slides.length, deviceImages.length);
+      const prev = (currentSlide - 1 + totalSlides) % totalSlides;
       changeSlide(prev);
     }
   };
@@ -144,20 +148,20 @@ const HeroSlider = () => {
           <h1 className={`text-2xl md:text-4xl lg:text-5xl font-bold mb-2 md:mb-4 leading-tight transition-all duration-500 ${
             isTransitioning ? 'opacity-0 translate-y-4' : 'opacity-100 translate-y-0'
           }`}>
-            {slides[currentSlide].title}
+            {slides[currentSlide % slides.length]?.title || "Discover Great Books"}
           </h1>
           <p className={`text-sm md:text-lg lg:text-xl mb-4 md:mb-8 opacity-90 max-w-2xl mx-auto transition-all duration-500 delay-100 ${
             isTransitioning ? 'opacity-0 translate-y-4' : 'opacity-100 translate-y-0'
           }`}>
-            {slides[currentSlide].subtitle}
+            {slides[currentSlide % slides.length]?.subtitle || "Find your next favorite read"}
           </p>
           <div className={`transition-all duration-500 delay-200 ${
             isTransitioning ? 'opacity-0 translate-y-4' : 'opacity-100 translate-y-0'
           }`}>
             <Button asChild variant="hero" size="lg" className="text-base md:text-lg px-6 md:px-8 hover:scale-105 transition-transform duration-200">
-              <Link to={slides[currentSlide].link}>
+              <Link to={slides[currentSlide % slides.length]?.link || "/books"}>
                 <ShoppingBag className="mr-2 h-4 w-4 md:h-5 md:w-5" />
-                {slides[currentSlide].cta}
+                {slides[currentSlide % slides.length]?.cta || "Browse Books"}
               </Link>
             </Button>
           </div>
@@ -177,7 +181,7 @@ const HeroSlider = () => {
 
       {/* Slide Indicators */}
       <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2 z-10">
-        {slides.map((_, index) => (
+        {Array.from({ length: Math.max(slides.length, deviceImages.length) }).map((_, index) => (
           <button
             key={index}
             onClick={() => !isTransitioning && changeSlide(index)}
