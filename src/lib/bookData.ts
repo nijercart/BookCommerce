@@ -171,17 +171,24 @@ export const genres = [
   "Business"
 ];
 
-// Search and filter functions
+// Enhanced search function with multi-language support
 export const searchBooks = (books: Book[], query: string): Book[] => {
   if (!query.trim()) return books;
   
-  const lowercaseQuery = query.toLowerCase();
-  return books.filter(book => 
-    book.title.toLowerCase().includes(lowercaseQuery) ||
-    book.author.toLowerCase().includes(lowercaseQuery) ||
-    book.genre.toLowerCase().includes(lowercaseQuery) ||
-    book.description.toLowerCase().includes(lowercaseQuery)
-  );
+  // Import multiLanguageSearch dynamically to avoid circular imports
+  const { multiLanguageSearch } = require('./multiLanguageSearch');
+  
+  const searchResults = multiLanguageSearch(books, query, {
+    threshold: 0.3,
+    searchFields: ['title', 'author', 'genre', 'description'],
+    includeTransliteration: true,
+    includePhonetic: true,
+  });
+  
+  return searchResults.map(result => {
+    const { searchScore, ...book } = result;
+    return book;
+  });
 };
 
 export const filterBooksByCondition = (books: Book[], condition?: "new" | "old"): Book[] => {

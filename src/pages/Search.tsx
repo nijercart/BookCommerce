@@ -14,6 +14,7 @@ import { useCartStore } from "@/lib/cartStore";
 import { useWishlistStore } from "@/lib/wishlistStore";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
+import { multiLanguageSearch } from "@/lib/multiLanguageSearch";
 import { supabase } from "@/integrations/supabase/client";
 
 interface Product {
@@ -94,15 +95,19 @@ const Search = () => {
     
     let filtered = [...products];
     
-    // Apply search filter
+    // Apply search filter with multi-language support
     if (searchQuery.trim()) {
-      const query = searchQuery.toLowerCase();
-      filtered = filtered.filter(product =>
-        product.title.toLowerCase().includes(query) ||
-        product.author.toLowerCase().includes(query) ||
-        product.category.toLowerCase().includes(query) ||
-        (product.description && product.description.toLowerCase().includes(query))
-      );
+      const searchResults = multiLanguageSearch(filtered, searchQuery, {
+        threshold: 0.3,
+        searchFields: ['title', 'author', 'category', 'description'],
+        includeTransliteration: true,
+        includePhonetic: true,
+      });
+      
+      filtered = searchResults.map(result => {
+        const { searchScore, ...product } = result;
+        return product;
+      });
     }
     
     // Apply condition filter based on active tab

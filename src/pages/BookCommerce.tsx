@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Search, Filter, Heart, Star, ShoppingCart, BookOpen, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
+import { multiLanguageSearch } from "@/lib/multiLanguageSearch";
 import { Header } from "@/components/Header";
 import { useCartStore } from "@/lib/cartStore";
 import { useToast } from "@/hooks/use-toast";
@@ -95,15 +96,19 @@ const BookCommerce = () => {
   const filteredProducts = useMemo(() => {
     let filtered = products;
     
-    // Apply search
+    // Apply search with multi-language support
     if (searchQuery.trim()) {
-      const query = searchQuery.toLowerCase();
-      filtered = filtered.filter(product => 
-        product.title.toLowerCase().includes(query) ||
-        product.author.toLowerCase().includes(query) ||
-        product.category.toLowerCase().includes(query) ||
-        product.description?.toLowerCase().includes(query)
-      );
+      const searchResults = multiLanguageSearch(filtered, searchQuery, {
+        threshold: 0.3,
+        searchFields: ['title', 'author', 'category', 'description'],
+        includeTransliteration: true,
+        includePhonetic: true,
+      });
+      
+      filtered = searchResults.map(result => {
+        const { searchScore, ...product } = result;
+        return product;
+      });
     }
     
     // Apply condition filter based on active tab
@@ -341,7 +346,7 @@ const BookCommerce = () => {
             <Search className="absolute left-7 sm:left-6 top-1/2 transform -translate-y-1/2 h-4 w-4 sm:h-5 sm:w-5 text-muted-foreground" />
             <Input
               type="search"
-              placeholder="Search by title, author, or genre..."
+              placeholder="Search in Bangla or English..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="pl-10 sm:pl-12 h-10 sm:h-12 text-sm sm:text-base md:text-lg bg-background text-foreground w-full"
