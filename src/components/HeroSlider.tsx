@@ -1,207 +1,161 @@
-import { useState, useEffect, useCallback } from "react";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-  CarouselApi,
-} from "@/components/ui/carousel";
+
+import { useState, useEffect } from "react";
+import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { ChevronLeft, ChevronRight, ShoppingBag } from "lucide-react";
 import { Link } from "react-router-dom";
-import { ChevronLeft, ChevronRight, Play, Pause } from "lucide-react";
-import Autoplay from "embla-carousel-autoplay";
 import { supabase } from "@/integrations/supabase/client";
+import { useQuery } from "@tanstack/react-query";
 
-// Local fallback images (optional if Supabase fails)
-import heroBanner1 from "@/assets/hero-banner-1.jpg";
-import heroBanner2 from "@/assets/hero-banner-2.jpg";
-import heroBanner3 from "@/assets/hero-banner-3.jpg";
-
-// Slide interface
-interface HeroSlide {
-  id: string | number;
-  image: string;
-  alt: string;
-  title: string;
-  subtitle: string;
-  cta: string;
-  link: string;
+interface HeroImage {
+  id: string;
+  device_type: string;
+  image_url: string;
+  alt_text: string;
+  is_active: boolean;
+  display_order: number;
 }
 
-// Manual fallback slides
-const manualSlides: HeroSlide[] = [
-  {
-    id: 1,
-    image: heroBanner1,
-    alt: "DIU Students Free Thursday Delivery",
-    title: "Exclusive for DIU Students",
-    subtitle: "FREE Thursday Delivery!",
-    cta: "Shop Now",
-    link: "/books",
-  },
-  {
-    id: 2,
-    image: heroBanner2,
-    alt: "Flash Sale - Up to 50% OFF",
-    title: "Flash Sale",
-    subtitle: "Get up to 50% OFF",
-    cta: "Shop Sale",
-    link: "/books",
-  },
-  {
-    id: 3,
-    image: heroBanner3,
-    alt: "Request Any Book - We'll Find It",
-    title: "Can't Find Your Book?",
-    subtitle: "We'll find it for you!",
-    cta: "Request Book",
-    link: "/request",
-  },
-];
-
 const HeroSlider = () => {
-  const [slides, setSlides] = useState<HeroSlide[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [api, setApi] = useState<CarouselApi>();
-  const [current, setCurrent] = useState(0);
-  const [isPlaying, setIsPlaying] = useState(true);
+  const [currentSlide, setCurrentSlide] = useState(0);
+  
+  const { data: heroImages = [] } = useQuery({
+    queryKey: ['hero-images'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('hero_images')
+        .select('device_type, image_url, alt_text, is_active')
+        .eq('is_active', true)
+        .order('display_order', { ascending: true });
+      
+      if (error) throw error;
+      return data || [];
+    }
+  });
 
-  const [autoplay] = useState(
-    Autoplay({
-      delay: 5000,
-      stopOnInteraction: false,
-      stopOnMouseEnter: true,
-    })
-  );
+  // Get the appropriate image for current device
+  const getImageForDevice = () => {
+    const width = window.innerWidth;
+    let deviceType = 'desktop';
+    
+    if (width < 768) {
+      deviceType = 'mobile';
+    } else if (width < 1024) {
+      deviceType = 'tablet';
+    }
+    
+    return heroImages.find(img => img.device_type === deviceType) || heroImages[0];
+  };
 
-  // Fetch slides from Supabase
+  const currentImage = getImageForDevice();
+
+  const slides = [
+    {
+      id: 1,
+      title: "Discover Your Next Great Read",
+      subtitle: "Explore thousands of books from classic literature to modern bestsellers",
+      cta: "Browse Books",
+      link: "/books"
+    },
+    {
+      id: 2,
+      title: "Premium Quality, Affordable Prices",
+      subtitle: "Get the best deals on new and pre-owned books",
+      cta: "Shop Now",
+      link: "/new-books"
+    },
+    {
+      id: 3,
+      title: "Build Your Personal Library",
+      subtitle: "Create your wishlist and never miss a book you love",
+      cta: "Start Collecting",
+      link: "/wishlist"
+    }
+  ];
+
   useEffect(() => {
-    const fetchHeroImages = async () => {
-      try {
-        const { data, error } = await supabase
-          .from("hero_images")
-          .select("*")
-          .eq("is_active", true)
-          .order("sort_order", { ascending: true });
+    const timer = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % slides.length);
+    }, 5000);
+    return () => clearInterval(timer);
+  }, [slides.length]);
 
-        if (error) throw error;
+  const nextSlide = () => {
+    setCurrentSlide((prev) => (prev + 1) % slides.length);
+  };
 
-        if (data && data.length > 0) {
-          const mappedSlides: HeroSlide[] = data.map((item) => ({
-            id: item.id,
-            image: item.image_url,
-            alt: item.alt || "",
-            title: item.title || "",
-            subtitle: item.subtitle || "",
-            cta: item.cta || "Learn More",
-            link: item.link || "/",
-          }));
+  const prevSlide = () => {
+    setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
+  };
 
-          setSlides(mappedSlides);
-        } else {
-          setSlides(manualSlides);
-        }
-      } catch (error) {
-        console.error("Error fetching hero images:", error);
-        setSlides(manualSlides);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchHeroImages();
-  }, []);
-
-  // Handle carousel change
-  useEffect(() => {
-    if (!api) return;
-    setCurrent(api.selectedScrollSnap());
-    api.on("select", () => {
-      setCurrent(api.selectedScrollSnap());
-    });
-  }, [api]);
-
-  // Toggle autoplay
-  const toggleAutoplay = useCallback(() => {
-    if (!autoplay) return;
-    isPlaying ? autoplay.stop() : autoplay.play();
-    setIsPlaying(!isPlaying);
-  }, [autoplay, isPlaying]);
-
-  if (loading) return null;
+  if (!currentImage) {
+    return null;
+  }
 
   return (
-    <section className="relative group">
-      <Carousel
-        setApi={setApi}
-        className="w-full"
-        plugins={[autoplay]}
-        opts={{ align: "start", loop: true }}
-      >
-        <CarouselContent>
-          {slides.map((slide) => (
-            <CarouselItem key={slide.id}>
-              <div className="relative aspect-[16/6] md:aspect-[16/5] lg:aspect-[16/4] w-full overflow-hidden">
-                <img
-                  src={slide.image}
-                  alt={slide.alt}
-                  className="absolute inset-0 w-full h-full object-cover object-center scale-110 transition-transform duration-[8000ms] ease-out"
-                />
-                <div className="absolute inset-0 bg-gradient-to-r from-black/30 via-transparent to-black/20" />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
-              </div>
-            </CarouselItem>
-          ))}
-        </CarouselContent>
+    <div className="relative w-full h-[300px] md:h-[400px] lg:h-[500px] overflow-hidden rounded-xl">
+      {/* Background Image */}
+      <div 
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+        style={{
+          backgroundImage: `linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url(${currentImage.image_url})`
+        }}
+      />
+      
+      {/* Content Overlay */}
+      <div className="relative z-10 flex items-center justify-between h-full px-4 md:px-8 lg:px-12">
+        {/* Left Arrow */}
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={prevSlide}
+          className="text-white hover:bg-white/20 backdrop-blur-sm"
+        >
+          <ChevronLeft className="h-6 w-6" />
+        </Button>
 
-        {/* Navigation */}
-        <div className="absolute left-4 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-          <CarouselPrevious className="h-12 w-12 bg-white/10 backdrop-blur-md hover:bg-white/20 text-white border-white/20 shadow-xl hover:scale-110 transition-all duration-300">
-            <ChevronLeft className="h-6 w-6" />
-          </CarouselPrevious>
-        </div>
-        <div className="absolute right-4 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-          <CarouselNext className="h-12 w-12 bg-white/10 backdrop-blur-md hover:bg-white/20 text-white border-white/20 shadow-xl hover:scale-110 transition-all duration-300">
-            <ChevronRight className="h-6 w-6" />
-          </CarouselNext>
-        </div>
-
-        {/* Play/Pause */}
-        <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-          <Button
-            size="sm"
-            variant="ghost"
-            onClick={toggleAutoplay}
-            className="h-10 w-10 bg-white/10 backdrop-blur-md hover:bg-white/20 text-white border-white/20 shadow-lg"
-          >
-            {isPlaying ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4" />}
+        {/* Content */}
+        <div className="flex-1 text-center text-white px-4">
+          <h1 className="text-2xl md:text-4xl lg:text-5xl font-bold mb-2 md:mb-4 leading-tight">
+            {slides[currentSlide].title}
+          </h1>
+          <p className="text-sm md:text-lg lg:text-xl mb-4 md:mb-8 opacity-90 max-w-2xl mx-auto">
+            {slides[currentSlide].subtitle}
+          </p>
+          <Button asChild variant="hero" size="lg" className="text-base md:text-lg px-6 md:px-8">
+            <Link to={slides[currentSlide].link}>
+              <ShoppingBag className="mr-2 h-4 w-4 md:h-5 md:w-5" />
+              {slides[currentSlide].cta}
+            </Link>
           </Button>
         </div>
-      </Carousel>
+
+        {/* Right Arrow */}
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={nextSlide}
+          className="text-white hover:bg-white/20 backdrop-blur-sm"
+        >
+          <ChevronRight className="h-6 w-6" />
+        </Button>
+      </div>
 
       {/* Slide Indicators */}
-      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex space-x-2">
+      <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2 z-10">
         {slides.map((_, index) => (
           <button
             key={index}
-            onClick={() => api?.scrollTo(index)}
-            className={`h-2 rounded-full transition-all duration-300 ${
-              index === current ? "w-8 bg-white shadow-lg" : "w-2 bg-white/50 hover:bg-white/80"
+            onClick={() => setCurrentSlide(index)}
+            className={`w-3 h-3 rounded-full transition-all ${
+              index === currentSlide 
+                ? 'bg-white' 
+                : 'bg-white/50 hover:bg-white/70'
             }`}
-            aria-label={`Go to slide ${index + 1}`}
           />
         ))}
       </div>
-
-      {/* Progress Bar */}
-      <div className="absolute bottom-0 left-0 w-full h-1 bg-black/20">
-        <div
-          className="h-full bg-primary transition-all duration-300 ease-out"
-          style={{ width: `${((current + 1) / slides.length) * 100}%` }}
-        />
-      </div>
-    </section>
+    </div>
   );
 };
 

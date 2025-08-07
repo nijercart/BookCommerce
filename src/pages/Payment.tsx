@@ -551,7 +551,7 @@ const Payment = () => {
                       <span className="text-2xl font-bold text-primary">৳{(() => {
                         const subtotal = getTotalPrice();
                         const deliveryCharge = subtotal > 1000 ? 0 : 60;
-                        // const tax = subtotal * 0.08;
+                        const tax = subtotal * 0.08;
                         let discount = 0;
                         if (appliedPromo) {
                           if (appliedPromo.discount_type === 'percentage') {
