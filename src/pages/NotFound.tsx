@@ -25,10 +25,10 @@ const NotFound = () => {
                   </Link>
                 </Button>
                 <Button asChild variant="outline">
-                  <Link to="/books">
+                  {/* <Link to="/books">
                     <Search className="mr-2 h-4 w-4" />
                     Browse Books
-                  </Link>
+                  </Link> */}
                 </Button>
               </div>
             </CardContent>
