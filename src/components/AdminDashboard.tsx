@@ -59,6 +59,7 @@ export function AdminDashboard() {
   const [showHeroDialog, setShowHeroDialog] = useState(false);
   const [heroDeviceType, setHeroDeviceType] = useState("desktop");
   const [heroImageUrl, setHeroImageUrl] = useState("");
+  const [heroImageFile, setHeroImageFile] = useState<File | null>(null);
   const [heroAltText, setHeroAltText] = useState("");
   const [heroDisplayOrder, setHeroDisplayOrder] = useState("1");
   const [heroIsActive, setHeroIsActive] = useState(true);
@@ -496,35 +497,55 @@ export function AdminDashboard() {
 
   const createHeroImage = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!isAdmin) return;
+    setLoading(true);
 
-    if (!heroImageUrl.trim() || !heroDeviceType) {
+    if (!heroImageFile || !heroDeviceType) {
       toast({
-        title: "All required fields must be filled",
+        title: "Missing information",
+        description: "Please select a device type and upload an image file",
         variant: "destructive"
       });
+      setLoading(false);
       return;
     }
 
     try {
-      const heroData = {
-        device_type: heroDeviceType,
-        image_url: heroImageUrl.trim(),
-        alt_text: heroAltText.trim() || 'Hero background image',
-        display_order: parseInt(heroDisplayOrder) || 1,
-        is_active: heroIsActive,
-        created_by: user?.id
-      };
+      // First upload the image file to storage
+      const fileExt = heroImageFile.name.split('.').pop();
+      const fileName = `hero-${heroDeviceType}-${Date.now()}.${fileExt}`;
+      
+      const { data: uploadData, error: uploadError } = await supabase.storage
+        .from('hero-banners')
+        .upload(fileName, heroImageFile);
 
-      const { error } = await supabase
+      if (uploadError) throw uploadError;
+
+      // Get the public URL for the uploaded file
+      const { data: urlData } = supabase.storage
+        .from('hero-banners')
+        .getPublicUrl(fileName);
+
+      const imageUrl = urlData.publicUrl;
+
+      // Save the hero image data to the database
+      const { data, error } = await supabase
         .from('hero_images')
-        .insert([heroData]);
+        .insert({
+          device_type: heroDeviceType,
+          image_url: imageUrl,
+          alt_text: heroAltText.trim() || 'Hero background image',
+          display_order: parseInt(heroDisplayOrder) || 1,
+          is_active: heroIsActive,
+          created_by: user?.id
+        })
+        .select()
+        .single();
 
       if (error) throw error;
 
       toast({
         title: "Success",
-        description: "Hero image added successfully"
+        description: "Hero image uploaded and added successfully"
       });
 
       resetHeroForm();
@@ -534,27 +555,55 @@ export function AdminDashboard() {
       console.error('Error creating hero image:', error);
       toast({
         title: "Error",
-        description: error.message || "Failed to add hero image",
+        description: error.message || "Failed to upload and add hero image",
         variant: "destructive"
       });
+    } finally {
+      setLoading(false);
     }
   };
 
   const updateHeroImage = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!isAdmin || !editingHero) return;
+    setLoading(true);
+
+    if (!editingHero) return;
 
     try {
-      const { error } = await supabase
+      let imageUrl = heroImageUrl; // Keep existing URL by default
+
+      // If a new file was uploaded, upload it first
+      if (heroImageFile) {
+        const fileExt = heroImageFile.name.split('.').pop();
+        const fileName = `hero-${heroDeviceType}-${Date.now()}.${fileExt}`;
+        
+        const { data: uploadData, error: uploadError } = await supabase.storage
+          .from('hero-banners')
+          .upload(fileName, heroImageFile);
+
+        if (uploadError) throw uploadError;
+
+        // Get the public URL for the uploaded file
+        const { data: urlData } = supabase.storage
+          .from('hero-banners')
+          .getPublicUrl(fileName);
+
+        imageUrl = urlData.publicUrl;
+      }
+
+      const { data, error } = await supabase
         .from('hero_images')
         .update({
           device_type: heroDeviceType,
-          image_url: heroImageUrl.trim(),
+          image_url: imageUrl,
           alt_text: heroAltText.trim() || 'Hero background image',
           display_order: parseInt(heroDisplayOrder) || 1,
-          is_active: heroIsActive
+          is_active: heroIsActive,
+          updated_at: new Date().toISOString()
         })
-        .eq('id', editingHero.id);
+        .eq('id', editingHero.id)
+        .select()
+        .single();
 
       if (error) throw error;
 
@@ -573,6 +622,8 @@ export function AdminDashboard() {
         description: error.message || "Failed to update hero image",
         variant: "destructive"
       });
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -637,6 +688,7 @@ export function AdminDashboard() {
     setHeroAltText(hero.alt_text || '');
     setHeroDisplayOrder(hero.display_order.toString());
     setHeroIsActive(hero.is_active);
+    setHeroImageFile(null); // Reset file input for editing
     setShowHeroDialog(true);
   };
 
@@ -647,6 +699,7 @@ export function AdminDashboard() {
     setHeroAltText("");
     setHeroDisplayOrder("1");
     setHeroIsActive(true);
+    setHeroImageFile(null);
   };
 
   if (!user) {
@@ -1325,15 +1378,25 @@ export function AdminDashboard() {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="image-url">Image URL *</Label>
+              <Label htmlFor="image-upload">
+                {editingHero ? 'Upload New Image (optional)' : 'Upload Image File *'}
+              </Label>
               <Input
-                id="image-url"
-                type="url"
-                placeholder="https://example.com/image.jpg or /src/assets/hero.jpg"
-                value={heroImageUrl}
-                onChange={(e) => setHeroImageUrl(e.target.value)}
-                required
+                id="image-upload"
+                type="file"
+                accept="image/*"
+                onChange={(e) => setHeroImageFile(e.target.files?.[0] || null)}
+                required={!editingHero}
+                className="cursor-pointer"
               />
+              {editingHero && heroImageUrl && (
+                <p className="text-xs text-muted-foreground">
+                  Current: {heroImageUrl.split('/').pop()}
+                </p>
+              )}
+              <p className="text-xs text-muted-foreground">
+                Supported formats: JPG, PNG, WebP. Recommended size: 1920x1080 (Desktop), 768x1024 (Tablet), 375x812 (Mobile)
+              </p>
             </div>
 
             <div className="space-y-2">
