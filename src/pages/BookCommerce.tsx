@@ -12,6 +12,7 @@ import { Header } from "@/components/Header";
 import { useCartStore } from "@/lib/cartStore";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
+import { BuyNowButton } from "@/components/BuyNowButton";
 
 // Product interface that matches our database
 interface Product {
@@ -185,6 +186,26 @@ const BookCommerce = () => {
                         product.product_images?.[0]?.image_url || 
                         "https://images.unsplash.com/photo-1544947950-fa07a98d237f?w=300&h=400&fit=crop";
     
+    // Convert product to Book format for BuyNowButton
+    const bookForBuyNow = {
+      id: product.id,
+      title: product.title,
+      author: product.author,
+      price: product.price,
+      originalPrice: product.original_price,
+      condition: product.condition as "new" | "old",
+      rating: 4, // Default rating
+      image: primaryImage,
+      description: product.description || "",
+      genre: product.category,
+      isbn: product.isbn || "",
+      publisher: product.publisher || "",
+      publishedYear: product.publication_year || 2024,
+      pages: product.pages || 0,
+      isPopular: product.featured,
+      inStock: product.stock_quantity
+    };
+    
     return (
       <Card className="group relative overflow-hidden bg-card hover:shadow-book transition-all duration-300 transform hover:-translate-y-1">
         {product.featured && (
@@ -245,24 +266,34 @@ const BookCommerce = () => {
           </div>
         </CardContent>
         
-        <CardFooter className="p-4 pt-0 flex items-center justify-between">
-          <div className="flex items-center gap-2">
+        <CardFooter className="p-4 pt-0 flex flex-col gap-3">
+          <div className="flex items-center gap-2 w-full">
             <span className="text-xl font-bold text-primary">৳{product.price}</span>
             {product.original_price && product.original_price > product.price && (
               <span className="text-sm text-muted-foreground line-through">৳{product.original_price}</span>
             )}
           </div>
-          <Button 
-            size="sm" 
-            variant="default" 
-            onClick={() => handleAddToCart(product)}
-            disabled={cartQuantity >= product.stock_quantity}
-            className="gap-2"
-          >
-            <ShoppingCart className="h-4 w-4" />
-            {cartQuantity >= product.stock_quantity ? "Out of Stock" : 
-             cartQuantity > 0 ? `In Cart (${cartQuantity})` : "Add to Cart"}
-          </Button>
+          
+          <div className="flex gap-2 w-full">
+            <Button 
+              size="sm" 
+              variant="default" 
+              onClick={() => handleAddToCart(product)}
+              disabled={cartQuantity >= product.stock_quantity}
+              className="flex-1 gap-2"
+            >
+              <ShoppingCart className="h-4 w-4" />
+              {cartQuantity >= product.stock_quantity ? "Out of Stock" : 
+               cartQuantity > 0 ? `In Cart (${cartQuantity})` : "Add to Cart"}
+            </Button>
+            
+            <BuyNowButton 
+              book={bookForBuyNow}
+              variant="secondary"
+              size="sm"
+              className="flex-1"
+            />
+          </div>
         </CardFooter>
       </Card>
     );
