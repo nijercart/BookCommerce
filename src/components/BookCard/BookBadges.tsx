@@ -15,11 +15,6 @@ export function BookBadges({ isPopular, hasDiscount, discountPercent }: BookBadg
           HOT
         </Badge>
       )}
-      {hasDiscount && (
-        <Badge className="bg-red-500 text-white text-[9px] px-1.5 py-0.5 font-medium rounded-md shadow-sm">
-          -{discountPercent}%
-        </Badge>
-      )}
     </div>
   );
 }

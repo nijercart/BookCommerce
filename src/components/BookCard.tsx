@@ -98,11 +98,6 @@ export function BookCard(book: Book) {
             discountPercent={discountPercent} 
           />
           
-          <WishlistButton 
-            isWishlisted={isWishlisted} 
-            onToggle={handleWishlistToggle} 
-          />
-          
           <BookImage 
             image={book.image} 
             title={book.title} 
