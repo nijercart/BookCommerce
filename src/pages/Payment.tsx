@@ -442,7 +442,7 @@ const Payment = () => {
       {[
         { id: "bkash", label: "bKash", number: "01825929393" },
         { id: "nagad", label: "Nagad", number: "01825929393" },
-        { id: "rocket", label: "Rocket", number: "01825929393" },
+        { id: "rocket", label: "Rocket", number: "018259293939" },
       ].map(({ id, label, number }) => (
         <div key={id} className="flex items-center gap-3 p-3 rounded-md border border-muted hover:border-primary transition-colors">
           <RadioGroupItem
