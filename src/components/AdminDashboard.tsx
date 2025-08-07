@@ -527,6 +527,18 @@ export function AdminDashboard() {
 
       const imageUrl = urlData.publicUrl;
 
+      // Get the next available display_order for this device_type
+      const { data: existingImages } = await supabase
+        .from('hero_images')
+        .select('display_order')
+        .eq('device_type', heroDeviceType)
+        .order('display_order', { ascending: false })
+        .limit(1);
+
+      const nextDisplayOrder = existingImages && existingImages.length > 0 
+        ? existingImages[0].display_order + 1 
+        : 1;
+
       // Save the hero image data to the database
       const { data, error } = await supabase
         .from('hero_images')
@@ -534,7 +546,7 @@ export function AdminDashboard() {
           device_type: heroDeviceType,
           image_url: imageUrl,
           alt_text: heroAltText.trim() || 'Hero background image',
-          display_order: parseInt(heroDisplayOrder) || 1,
+          display_order: parseInt(heroDisplayOrder) || nextDisplayOrder,
           is_active: heroIsActive,
           created_by: user?.id
         })
