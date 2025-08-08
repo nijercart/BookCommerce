@@ -41,7 +41,7 @@ const App = () => (
           <Route path="/books" element={<BookCommerce />} />
           <Route path="/search" element={<Search />} />
           <Route path="/cart" element={<Cart />} />
-          <Route path="/request" element={<BookRequest />} />
+          <Route path="/book-request" element={<BookRequest />} />
           <Route path="/support" element={<Support />} />
           <Route path="/admin" element={<Admin />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
