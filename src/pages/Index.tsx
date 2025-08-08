@@ -11,7 +11,6 @@ import heroImage from "@/assets/books-hero.jpg";
 import { useState, useEffect } from "react";
 import HeroSlider from "@/components/HeroSlider";
 import { supabase } from "@/integrations/supabase/client";
-
 const Index = () => {
   const [featuredBooks, setFeaturedBooks] = useState<any[]>([]);
   const [allBooks, setAllBooks] = useState<any[]>([]);
@@ -23,21 +22,18 @@ const Index = () => {
   const [bestSellingLoading, setBestSellingLoading] = useState(true);
   const [bestAuthorsLoading, setBestAuthorsLoading] = useState(true);
   const [trendingLoading, setTrendingLoading] = useState(true);
-
   useEffect(() => {
     const fetchFeaturedBooks = async () => {
       try {
-        const { data, error } = await supabase
-          .from('products')
-          .select(`
+        const {
+          data,
+          error
+        } = await supabase.from('products').select(`
             *,
             product_images(image_url, alt_text, is_primary)
-          `)
-          .eq('featured', true)
-          .eq('status', 'active')
-          .limit(4)
-          .order('created_at', { ascending: false });
-
+          `).eq('featured', true).eq('status', 'active').limit(4).order('created_at', {
+          ascending: false
+        });
         if (error) throw error;
         setFeaturedBooks(data || []);
       } catch (error) {
@@ -46,19 +42,17 @@ const Index = () => {
         setLoading(false);
       }
     };
-
     const fetchAllBooks = async () => {
       try {
-        const { data, error } = await supabase
-          .from('products')
-          .select(`
+        const {
+          data,
+          error
+        } = await supabase.from('products').select(`
             *,
             product_images(image_url, alt_text, is_primary)
-          `)
-          .eq('status', 'active')
-          .limit(12)
-          .order('created_at', { ascending: false });
-
+          `).eq('status', 'active').limit(12).order('created_at', {
+          ascending: false
+        });
         if (error) throw error;
         setAllBooks(data || []);
       } catch (error) {
@@ -67,21 +61,18 @@ const Index = () => {
         setAllBooksLoading(false);
       }
     };
-
     const fetchBestSellingBooks = async () => {
       try {
         // Using featured books as proxy for best selling
-        const { data, error } = await supabase
-          .from('products')
-          .select(`
+        const {
+          data,
+          error
+        } = await supabase.from('products').select(`
             *,
             product_images(image_url, alt_text, is_primary)
-          `)
-          .eq('status', 'active')
-          .eq('featured', true)
-          .limit(8)
-          .order('created_at', { ascending: false });
-
+          `).eq('status', 'active').eq('featured', true).limit(8).order('created_at', {
+          ascending: false
+        });
         if (error) throw error;
         setBestSellingBooks(data || []);
       } catch (error) {
@@ -90,21 +81,18 @@ const Index = () => {
         setBestSellingLoading(false);
       }
     };
-
     const fetchBestAuthorsBooks = async () => {
       try {
         // Get books from popular authors (authors with multiple books)
-        const { data, error } = await supabase
-          .from('products')
-          .select(`
+        const {
+          data,
+          error
+        } = await supabase.from('products').select(`
             *,
             product_images(image_url, alt_text, is_primary)
-          `)
-          .eq('status', 'active')
-          .in('author', ['J.K. Rowling', 'Stephen King', 'Dan Brown', 'Agatha Christie', 'George R.R. Martin'])
-          .limit(8)
-          .order('created_at', { ascending: false });
-
+          `).eq('status', 'active').in('author', ['J.K. Rowling', 'Stephen King', 'Dan Brown', 'Agatha Christie', 'George R.R. Martin']).limit(8).order('created_at', {
+          ascending: false
+        });
         if (error) throw error;
         setBestAuthorsBooks(data || []);
       } catch (error) {
@@ -113,20 +101,18 @@ const Index = () => {
         setBestAuthorsLoading(false);
       }
     };
-
     const fetchTrendingBooks = async () => {
       try {
         // Get recently added books as trending
-        const { data, error } = await supabase
-          .from('products')
-          .select(`
+        const {
+          data,
+          error
+        } = await supabase.from('products').select(`
             *,
             product_images(image_url, alt_text, is_primary)
-          `)
-          .eq('status', 'active')
-          .limit(8)
-          .order('created_at', { ascending: false });
-
+          `).eq('status', 'active').limit(8).order('created_at', {
+          ascending: false
+        });
         if (error) throw error;
         setTrendingBooks(data || []);
       } catch (error) {
@@ -135,16 +121,13 @@ const Index = () => {
         setTrendingLoading(false);
       }
     };
-
     fetchFeaturedBooks();
     fetchAllBooks();
     fetchBestSellingBooks();
     fetchBestAuthorsBooks();
     fetchTrendingBooks();
   }, []);
-
-  return (
-    <div className="min-h-screen bg-background">
+  return <div className="min-h-screen bg-background">
       <Header />
       
       {/* Hero Slider */}
@@ -154,40 +137,28 @@ const Index = () => {
       <section className="py-4 sm:py-6 md:py-8 bg-gradient-to-r from-primary/5 via-secondary/10 to-accent/5 border-b border-border/30">
         <div className="max-w-screen-2xl mx-auto px-4 sm:px-6">
           <div className="flex flex-wrap justify-center items-center gap-2 sm:gap-4 md:gap-8">
-            <Link 
-              to="/books?category=fiction" 
-              className="group relative bg-background/80 backdrop-blur-sm hover:bg-primary/10 rounded-lg sm:rounded-xl px-3 py-2 sm:px-4 sm:py-3 md:px-6 md:py-4 transition-all duration-300 hover:scale-105 shadow-sm hover:shadow-md border border-border/50 hover:border-primary/30 min-w-0 flex-shrink-0"
-            >
+            <Link to="/books?category=fiction" className="group relative bg-background/80 backdrop-blur-sm hover:bg-primary/10 rounded-lg sm:rounded-xl px-3 py-2 sm:px-4 sm:py-3 md:px-6 md:py-4 transition-all duration-300 hover:scale-105 shadow-sm hover:shadow-md border border-border/50 hover:border-primary/30 min-w-0 flex-shrink-0">
               <div className="flex items-center gap-1.5 sm:gap-2">
                 <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-primary rounded-full group-hover:scale-125 transition-transform"></div>
                 <span className="text-xs sm:text-sm md:text-base font-medium text-foreground group-hover:text-primary transition-colors">Fiction</span>
               </div>
             </Link>
             
-            <Link 
-              to="/books?category=non-fiction" 
-              className="group relative bg-background/80 backdrop-blur-sm hover:bg-accent/10 rounded-lg sm:rounded-xl px-3 py-2 sm:px-4 sm:py-3 md:px-6 md:py-4 transition-all duration-300 hover:scale-105 shadow-sm hover:shadow-md border border-border/50 hover:border-accent/30 min-w-0 flex-shrink-0"
-            >
+            <Link to="/books?category=non-fiction" className="group relative bg-background/80 backdrop-blur-sm hover:bg-accent/10 rounded-lg sm:rounded-xl px-3 py-2 sm:px-4 sm:py-3 md:px-6 md:py-4 transition-all duration-300 hover:scale-105 shadow-sm hover:shadow-md border border-border/50 hover:border-accent/30 min-w-0 flex-shrink-0">
               <div className="flex items-center gap-1.5 sm:gap-2">
                 <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-accent rounded-full group-hover:scale-125 transition-transform"></div>
                 <span className="text-xs sm:text-sm md:text-base font-medium text-foreground group-hover:text-accent transition-colors">Non-Fiction</span>
               </div>
             </Link>
             
-            <Link 
-              to="/books?category=academic" 
-              className="group relative bg-background/80 backdrop-blur-sm hover:bg-secondary/10 rounded-lg sm:rounded-xl px-3 py-2 sm:px-4 sm:py-3 md:px-6 md:py-4 transition-all duration-300 hover:scale-105 shadow-sm hover:shadow-md border border-border/50 hover:border-secondary/30 min-w-0 flex-shrink-0"
-            >
+            <Link to="/books?category=academic" className="group relative bg-background/80 backdrop-blur-sm hover:bg-secondary/10 rounded-lg sm:rounded-xl px-3 py-2 sm:px-4 sm:py-3 md:px-6 md:py-4 transition-all duration-300 hover:scale-105 shadow-sm hover:shadow-md border border-border/50 hover:border-secondary/30 min-w-0 flex-shrink-0">
               <div className="flex items-center gap-1.5 sm:gap-2">
                 <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-secondary rounded-full group-hover:scale-125 transition-transform"></div>
                 <span className="text-xs sm:text-sm md:text-base font-medium text-foreground group-hover:text-secondary transition-colors">Academic</span>
               </div>
             </Link>
             
-            <Link 
-              to="/books?category=children" 
-              className="group relative bg-background/80 backdrop-blur-sm hover:bg-primary/10 rounded-lg sm:rounded-xl px-3 py-2 sm:px-4 sm:py-3 md:px-6 md:py-4 transition-all duration-300 hover:scale-105 shadow-sm hover:shadow-md border border-border/50 hover:border-primary/30 min-w-0 flex-shrink-0"
-            >
+            <Link to="/books?category=children" className="group relative bg-background/80 backdrop-blur-sm hover:bg-primary/10 rounded-lg sm:rounded-xl px-3 py-2 sm:px-4 sm:py-3 md:px-6 md:py-4 transition-all duration-300 hover:scale-105 shadow-sm hover:shadow-md border border-border/50 hover:border-primary/30 min-w-0 flex-shrink-0">
               <div className="flex items-center gap-1.5 sm:gap-2">
                 <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-primary rounded-full group-hover:scale-125 transition-transform"></div>
                 <span className="text-xs sm:text-sm md:text-base font-medium text-foreground group-hover:text-primary transition-colors whitespace-nowrap">Children's</span>
@@ -208,7 +179,7 @@ const Index = () => {
             <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed px-4">
               Discover our carefully curated selection of bestsellers, new releases, and hidden gems
             </p>
-            <div className="flex flex-col sm:flex-row justify-center items-center gap-3 sm:gap-4 mt-6 sm:mt-8">
+            <div className="flex flex-col sm:flex-row justify-center items-center gap-3 sm:gap-4 mt-6 sm:mt-8 bg-green-600">
               <Button size="lg" className="group bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary shadow-lg hover:shadow-xl transition-all text-sm sm:text-base" asChild>
                 <Link to="/books">
                   <Search className="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
@@ -226,52 +197,27 @@ const Index = () => {
             </div>
           </div>
           
-          {loading ? (
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 md:gap-6">
-              {Array.from({ length: 4 }).map((_, index) => (
-                <div key={index} className="animate-pulse">
+          {loading ? <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 md:gap-6">
+              {Array.from({
+            length: 4
+          }).map((_, index) => <div key={index} className="animate-pulse">
                   <div className="bg-muted rounded-lg aspect-[3/4] mb-3"></div>
                   <div className="space-y-2">
                     <div className="h-4 bg-muted rounded w-3/4"></div>
                     <div className="h-3 bg-muted rounded w-1/2"></div>
                     <div className="h-3 bg-muted rounded w-1/4"></div>
                   </div>
-                </div>
-              ))}
-            </div>
-          ) : featuredBooks.length > 0 ? (
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-7 gap-4 md:gap-6">
-              {featuredBooks.map((book) => (
-                <BookCard 
-                  key={book.id} 
-                  id={book.id}
-                  title={book.title}
-                  author={book.author}
-                  price={book.price}
-                  originalPrice={book.original_price}
-                  condition={book.condition as "new" | "old"}
-                  rating={4}
-                  image={book.product_images?.[0]?.image_url || "https://images.unsplash.com/photo-1544947950-fa07a98d237f?w=300&h=400&fit=crop"}
-                  description={book.description}
-                  genre={book.category}
-                  isbn={book.isbn || ""}
-                  publisher={book.publisher || ""}
-                  publishedYear={book.publication_year || 2024}
-                  pages={book.pages || 200}
-                  inStock={book.stock_quantity}
-                />
-              ))}
-            </div>
-          ) : (
-            <div className="text-center py-12">
+                </div>)}
+            </div> : featuredBooks.length > 0 ? <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-7 gap-4 md:gap-6">
+              {featuredBooks.map(book => <BookCard key={book.id} id={book.id} title={book.title} author={book.author} price={book.price} originalPrice={book.original_price} condition={book.condition as "new" | "old"} rating={4} image={book.product_images?.[0]?.image_url || "https://images.unsplash.com/photo-1544947950-fa07a98d237f?w=300&h=400&fit=crop"} description={book.description} genre={book.category} isbn={book.isbn || ""} publisher={book.publisher || ""} publishedYear={book.publication_year || 2024} pages={book.pages || 200} inStock={book.stock_quantity} />)}
+            </div> : <div className="text-center py-12">
               <BookOpen className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
               <h3 className="text-lg font-semibold mb-2">No Featured Books Yet</h3>
               <p className="text-muted-foreground mb-4">Check back soon for our handpicked selection!</p>
               <Button variant="outline" asChild>
                 <Link to="/books">Browse All Books</Link>
               </Button>
-            </div>
-          )}
+            </div>}
         </div>
       </section>
 
@@ -281,7 +227,7 @@ const Index = () => {
           <div className="text-center mb-12 md:mb-16">
             {/* <Badge className="mb-4 bg-secondary/10 text-secondary border-secondary/20 text-sm font-medium">
               📚 Complete Collection
-            </Badge> */}
+             </Badge> */}
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-4 bg-gradient-to-r from-foreground to-foreground/80 bg-clip-text">
               All Books
             </h2>
@@ -290,42 +236,20 @@ const Index = () => {
             </p>
           </div>
           
-          {allBooksLoading ? (
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-7 gap-4 md:gap-6">
-              {Array.from({ length: 12 }).map((_, index) => (
-                <div key={index} className="animate-pulse">
+          {allBooksLoading ? <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-7 gap-4 md:gap-6">
+              {Array.from({
+            length: 12
+          }).map((_, index) => <div key={index} className="animate-pulse">
                   <div className="bg-muted rounded-lg aspect-[3/4] mb-3"></div>
                   <div className="space-y-2">
                     <div className="h-4 bg-muted rounded w-3/4"></div>
                     <div className="h-3 bg-muted rounded w-1/2"></div>
                     <div className="h-3 bg-muted rounded w-1/4"></div>
                   </div>
-                </div>
-              ))}
-            </div>
-          ) : allBooks.length > 0 ? (
-            <>
+                </div>)}
+            </div> : allBooks.length > 0 ? <>
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-7 gap-4 md:gap-6">
-                {allBooks.map((book) => (
-                  <BookCard 
-                    key={book.id} 
-                    id={book.id}
-                    title={book.title}
-                    author={book.author}
-                    price={book.price}
-                    originalPrice={book.original_price}
-                    condition={book.condition as "new" | "old"}
-                    rating={4}
-                    image={book.product_images?.[0]?.image_url || "https://images.unsplash.com/photo-1544947950-fa07a98d237f?w=300&h=400&fit=crop"}
-                    description={book.description}
-                    genre={book.category}
-                    isbn={book.isbn || ""}
-                    publisher={book.publisher || ""}
-                    publishedYear={book.publication_year || 2024}
-                    pages={book.pages || 200}
-                    inStock={book.stock_quantity}
-                  />
-                ))}
+                {allBooks.map(book => <BookCard key={book.id} id={book.id} title={book.title} author={book.author} price={book.price} originalPrice={book.original_price} condition={book.condition as "new" | "old"} rating={4} image={book.product_images?.[0]?.image_url || "https://images.unsplash.com/photo-1544947950-fa07a98d237f?w=300&h=400&fit=crop"} description={book.description} genre={book.category} isbn={book.isbn || ""} publisher={book.publisher || ""} publishedYear={book.publication_year || 2024} pages={book.pages || 200} inStock={book.stock_quantity} />)}
               </div>
               
               <div className="text-center mt-12">
@@ -337,17 +261,14 @@ const Index = () => {
                   </Link>
                 </Button>
               </div>
-            </>
-          ) : (
-            <div className="text-center py-12">
+            </> : <div className="text-center py-12">
               <BookOpen className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
               <h3 className="text-lg font-semibold mb-2">No Books Available</h3>
               <p className="text-muted-foreground mb-4">Check back soon for our latest collection!</p>
               <Button variant="outline" asChild>
                 <Link to="/book-request">Request a Book</Link>
               </Button>
-            </div>
-          )}
+            </div>}
         </div>
       </section>
 
@@ -357,7 +278,7 @@ const Index = () => {
           <div className="text-center mb-12 md:mb-16">
             {/* <Badge className="mb-4 bg-accent/10 text-accent border-accent/20 text-sm font-medium">
               🏆 Most Popular
-            </Badge> */}
+             </Badge> */}
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-4">
               Best Selling Books
             </h2>
@@ -366,48 +287,23 @@ const Index = () => {
             </p>
           </div>
           
-          {bestSellingLoading ? (
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-8 gap-4 md:gap-6">
-              {Array.from({ length: 8 }).map((_, index) => (
-                <div key={index} className="animate-pulse">
+          {bestSellingLoading ? <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-8 gap-4 md:gap-6">
+              {Array.from({
+            length: 8
+          }).map((_, index) => <div key={index} className="animate-pulse">
                   <div className="bg-muted rounded-lg aspect-[3/4] mb-3"></div>
                   <div className="space-y-2">
                     <div className="h-4 bg-muted rounded w-3/4"></div>
                     <div className="h-3 bg-muted rounded w-1/2"></div>
                   </div>
-                </div>
-              ))}
-            </div>
-          ) : bestSellingBooks.length > 0 ? (
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-8 gap-4 md:gap-6">
-              {bestSellingBooks.map((book) => (
-                <BookCard 
-                  key={book.id} 
-                  id={book.id}
-                  title={book.title}
-                  author={book.author}
-                  price={book.price}
-                  originalPrice={book.original_price}
-                  condition={book.condition as "new" | "old"}
-                  rating={4}
-                  image={book.product_images?.[0]?.image_url || "https://images.unsplash.com/photo-1544947950-fa07a98d237f?w=300&h=400&fit=crop"}
-                  description={book.description}
-                  genre={book.category}
-                  isbn={book.isbn || ""}
-                  publisher={book.publisher || ""}
-                  publishedYear={book.publication_year || 2024}
-                  pages={book.pages || 200}
-                  inStock={book.stock_quantity}
-                />
-              ))}
-            </div>
-          ) : (
-            <div className="text-center py-12">
+                </div>)}
+            </div> : bestSellingBooks.length > 0 ? <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-8 gap-4 md:gap-6">
+              {bestSellingBooks.map(book => <BookCard key={book.id} id={book.id} title={book.title} author={book.author} price={book.price} originalPrice={book.original_price} condition={book.condition as "new" | "old"} rating={4} image={book.product_images?.[0]?.image_url || "https://images.unsplash.com/photo-1544947950-fa07a98d237f?w=300&h=400&fit=crop"} description={book.description} genre={book.category} isbn={book.isbn || ""} publisher={book.publisher || ""} publishedYear={book.publication_year || 2024} pages={book.pages || 200} inStock={book.stock_quantity} />)}
+            </div> : <div className="text-center py-12">
               <Star className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
               <h3 className="text-lg font-semibold mb-2">No Best Sellers Yet</h3>
               <p className="text-muted-foreground mb-4">Check back soon for our top-selling books!</p>
-            </div>
-          )}
+            </div>}
         </div>
       </section>
 
@@ -419,7 +315,7 @@ const Index = () => {
           <div className="text-center mb-12 md:mb-16">
             {/* <Badge className="mb-4 bg-primary/10 text-primary border-primary/20 text-sm font-medium">
               🔥 Hot Right Now
-            </Badge> */}
+             </Badge> */}
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-4">
               Trending Books
             </h2>
@@ -428,48 +324,23 @@ const Index = () => {
             </p>
           </div>
           
-          {trendingLoading ? (
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-8 gap-4 md:gap-6">
-              {Array.from({ length: 8 }).map((_, index) => (
-                <div key={index} className="animate-pulse">
+          {trendingLoading ? <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-8 gap-4 md:gap-6">
+              {Array.from({
+            length: 8
+          }).map((_, index) => <div key={index} className="animate-pulse">
                   <div className="bg-muted rounded-lg aspect-[3/4] mb-3"></div>
                   <div className="space-y-2">
                     <div className="h-4 bg-muted rounded w-3/4"></div>
                     <div className="h-3 bg-muted rounded w-1/2"></div>
                   </div>
-                </div>
-              ))}
-            </div>
-          ) : trendingBooks.length > 0 ? (
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-8 gap-4 md:gap-6">
-              {trendingBooks.map((book) => (
-                <BookCard 
-                  key={book.id} 
-                  id={book.id}
-                  title={book.title}
-                  author={book.author}
-                  price={book.price}
-                  originalPrice={book.original_price}
-                  condition={book.condition as "new" | "old"}
-                  rating={4}
-                  image={book.product_images?.[0]?.image_url || "https://images.unsplash.com/photo-1544947950-fa07a98d237f?w=300&h=400&fit=crop"}
-                  description={book.description}
-                  genre={book.category}
-                  isbn={book.isbn || ""}
-                  publisher={book.publisher || ""}
-                  publishedYear={book.publication_year || 2024}
-                  pages={book.pages || 200}
-                  inStock={book.stock_quantity}
-                />
-              ))}
-            </div>
-          ) : (
-            <div className="text-center py-12">
+                </div>)}
+            </div> : trendingBooks.length > 0 ? <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-8 gap-4 md:gap-6">
+              {trendingBooks.map(book => <BookCard key={book.id} id={book.id} title={book.title} author={book.author} price={book.price} originalPrice={book.original_price} condition={book.condition as "new" | "old"} rating={4} image={book.product_images?.[0]?.image_url || "https://images.unsplash.com/photo-1544947950-fa07a98d237f?w=300&h=400&fit=crop"} description={book.description} genre={book.category} isbn={book.isbn || ""} publisher={book.publisher || ""} publishedYear={book.publication_year || 2024} pages={book.pages || 200} inStock={book.stock_quantity} />)}
+            </div> : <div className="text-center py-12">
               <ArrowRight className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
               <h3 className="text-lg font-semibold mb-2">No Trending Books Yet</h3>
               <p className="text-muted-foreground mb-4">Check back soon for the latest trending titles!</p>
-            </div>
-          )}
+            </div>}
         </div>
       </section>
 
@@ -654,8 +525,6 @@ const Index = () => {
       </section>
 
       <Footer />
-    </div>
-  );
+    </div>;
 };
-
 export default Index;
