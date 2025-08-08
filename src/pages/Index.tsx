@@ -208,11 +208,18 @@ const Index = () => {
             <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed px-4">
               Discover our carefully curated selection of bestsellers, new releases, and hidden gems
             </p>
-            <div className="flex justify-center mt-6 sm:mt-8">
+            <div className="flex flex-col sm:flex-row justify-center items-center gap-3 sm:gap-4 mt-6 sm:mt-8">
               <Button size="lg" className="group bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary shadow-lg hover:shadow-xl transition-all text-sm sm:text-base" asChild>
                 <Link to="/books">
                   <Search className="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
                   Browse All Books
+                  <ArrowRight className="ml-2 h-4 w-4 sm:h-5 sm:w-5 group-hover:translate-x-1 transition-transform" />
+                </Link>
+              </Button>
+              <Button size="lg" variant="outline" className="group border-2 hover:bg-primary/5 transition-all text-sm sm:text-base" asChild>
+                <Link to="/book-request">
+                  <BookOpen className="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
+                  Request Books
                   <ArrowRight className="ml-2 h-4 w-4 sm:h-5 sm:w-5 group-hover:translate-x-1 transition-transform" />
                 </Link>
               </Button>
