@@ -85,7 +85,7 @@ export type Database = {
           telegram: string | null
           title: string
           updated_at: string
-          user_id: string
+          user_id: string | null
           whatsapp: string | null
         }
         Insert: {
@@ -101,7 +101,7 @@ export type Database = {
           telegram?: string | null
           title: string
           updated_at?: string
-          user_id: string
+          user_id?: string | null
           whatsapp?: string | null
         }
         Update: {
@@ -117,7 +117,7 @@ export type Database = {
           telegram?: string | null
           title?: string
           updated_at?: string
-          user_id?: string
+          user_id?: string | null
           whatsapp?: string | null
         }
         Relationships: [
