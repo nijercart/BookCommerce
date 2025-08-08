@@ -179,7 +179,7 @@ const Index = () => {
             <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed px-4">
               Discover our carefully curated selection of bestsellers, new releases, and hidden gems
             </p>
-            <div className="flex flex-col sm:flex-row justify-center items-center gap-3 sm:gap-4 mt-6 sm:mt-8 bg-slate-50">
+            <div className="flex flex-col sm:flex-row justify-center items-center gap-3 sm:gap-4 mt-6 sm:mt-8 bg-white/[0.31]">
               <Button size="lg" className="group bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary shadow-lg hover:shadow-xl transition-all text-sm sm:text-base" asChild>
                 <Link to="/books">
                   <Search className="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
