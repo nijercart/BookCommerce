@@ -19,9 +19,9 @@ All colors MUST be HSL.
     --popover: 0 0% 100%;
     --popover-foreground: 215 20% 15%;
 
-    /* Primary - Vibrant orange inspired by Daraz */
-    --primary: 14 100% 57%;
-    --primary-hover: 14 100% 52%;
+    /* Primary - Vibrant green for book requests */
+    --primary: 142 76% 45%;
+    --primary-hover: 142 76% 40%;
     --primary-foreground: 0 0% 100%;
 
     /* Secondary - Professional blue inspired by Rokomari */
@@ -43,7 +43,7 @@ All colors MUST be HSL.
 
     --border: 214 32% 91%;
     --input: 214 32% 91%;
-    --ring: 14 100% 57%;
+    --ring: 142 76% 45%;
 
     /* E-commerce specific colors */
     --price-color: 0 84% 60%;
@@ -93,8 +93,8 @@ All colors MUST be HSL.
     --popover: 215 28% 9%;
     --popover-foreground: 210 40% 98%;
 
-    --primary: 14 100% 62%;
-    --primary-hover: 14 100% 57%;
+    --primary: 142 76% 50%;
+    --primary-hover: 142 76% 45%;
     --primary-foreground: 215 28% 7%;
 
     --secondary: 213 83% 58%;
@@ -113,7 +113,7 @@ All colors MUST be HSL.
 
     --border: 215 28% 18%;
     --input: 215 28% 18%;
-    --ring: 14 100% 62%;
+    --ring: 142 76% 50%;
 
     /* Dark mode shadows */
     --shadow-card: 0 2px 8px hsl(215, 28%, 7% / 0.5);
