@@ -20,6 +20,7 @@ import { OrderManagement } from "./admin/OrderManagement";
 import { CustomerSupport } from "./admin/CustomerSupport";
 import { UserManagement } from "./admin/UserManagement";
 import { BookRequestManagement } from "./admin/BookRequestManagement";
+import { HeroImageManagement } from "./admin/HeroImageManagement";
 
 interface DashboardStats {
   totalProducts: number;
