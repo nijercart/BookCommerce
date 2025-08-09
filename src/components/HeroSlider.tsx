@@ -1,8 +1,7 @@
 
 import { useState, useEffect } from "react";
-import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ChevronLeft, ChevronRight, ShoppingBag } from "lucide-react";
+import { ChevronLeft, ChevronRight, ShoppingBag, Star, TrendingUp } from "lucide-react";
 import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useQuery } from "@tanstack/react-query";
@@ -54,24 +53,30 @@ const HeroSlider = () => {
   const slides = [
     {
       id: 1,
-      // title: "Discover Your Next Great Read",
-      // subtitle: "Explore thousands of books from classic literature to modern bestsellers",
-      // cta: "Browse Books",
-      link: "/books"
+      title: "Discover Your Next Great Read",
+      subtitle: "Explore thousands of books from classic literature to modern bestsellers",
+      cta: "Browse Collection",
+      link: "/books",
+      badge: "New Arrivals",
+      stats: "10,000+ Books"
     },
     {
       id: 2,
-      // title: "Premium Quality, Affordable Prices",
-      // subtitle: "Get the best deals on new and pre-owned books",
-      // cta: "Shop Now",
-      // link: "/new-books"
+      title: "Premium Quality, Affordable Prices",
+      subtitle: "Get the best deals on new and pre-owned books with fast delivery",
+      cta: "Shop Now",
+      link: "/new-books",
+      badge: "Best Deals",
+      stats: "Up to 70% Off"
     },
     {
       id: 3,
-      // title: "Build Your Personal Library",
-      // subtitle: "Create your wishlist and never miss a book you love",
-      // cta: "Start Collecting",
-      // link: "/wishlist"
+      title: "Build Your Personal Library",
+      subtitle: "Create your wishlist and never miss a book you love",
+      cta: "Start Collecting",
+      link: "/wishlist",
+      badge: "Trending",
+      stats: "50+ Categories"
     }
   ];
 
@@ -118,87 +123,116 @@ const HeroSlider = () => {
     return null;
   }
 
+  const currentSlideData = slides[currentSlide % slides.length];
+
   return (
-    <div className="relative w-full h-[300px] md:h-[400px] lg:h-[500px] overflow-hidden rounded-xl">
-      {/* Background Image with smooth transition */}
+    <div className="relative w-full h-[400px] md:h-[500px] lg:h-[600px] overflow-hidden rounded-2xl shadow-modal">
+      {/* Background Image with Professional Overlay */}
       <div 
-        className={`absolute inset-0 bg-cover bg-center bg-no-repeat transition-all duration-500 ease-in-out ${
-          isTransitioning ? 'scale-105 opacity-90' : 'scale-100 opacity-100'
+        className={`absolute inset-0 bg-cover bg-center bg-no-repeat transition-all duration-700 ease-out ${
+          isTransitioning ? 'scale-110 opacity-80' : 'scale-100 opacity-100'
         }`}
         style={{
-          backgroundImage: `linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url(${currentImage.image_url})`
+          backgroundImage: `url(${currentImage.image_url})`
         }}
       />
       
-      {/* Content Overlay */}
-      <div className="relative z-10 flex items-center justify-between h-full px-4 md:px-8 lg:px-12">
-        {/* Left Arrow */}
+      {/* Professional Gradient Overlay */}
+      <div className="absolute inset-0 bg-gradient-to-r from-background/95 via-background/60 to-transparent" />
+      <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent" />
+      
+      {/* Content Container */}
+      <div className="relative z-10 flex items-center h-full">
+        {/* Navigation Arrows */}
         <Button
           variant="ghost"
           size="icon"
           onClick={prevSlide}
           disabled={isTransitioning}
-          className="hidden sm:flex text-white hover:bg-white/20 backdrop-blur-sm transition-all duration-200 hover:scale-110 disabled:opacity-50"
+          className="absolute left-4 md:left-8 z-20 h-12 w-12 bg-background/80 backdrop-blur-md border border-border/50 text-foreground hover:bg-background/90 transition-all duration-300 hover:scale-110 disabled:opacity-50 shadow-lg"
         >
-          <ChevronLeft className="h-6 w-6" />
+          <ChevronLeft className="h-5 w-5" />
         </Button>
 
-        {/* Content */}
-        <div className="flex-1 text-center text-white px-4">
-          {/* <h1 className={`text-2xl md:text-4xl lg:text-5xl font-bold mb-2 md:mb-4 leading-tight transition-all duration-500 ${
-            isTransitioning ? 'opacity-0 translate-y-4' : 'opacity-100 translate-y-0'
-          }`}>
-            {slides[currentSlide % slides.length]?.title || "Discover Great Books"}
-          </h1> */}
-          {/* <p className={`text-sm md:text-lg lg:text-xl mb-4 md:mb-8 opacity-90 max-w-2xl mx-auto transition-all duration-500 delay-100 ${
-            isTransitioning ? 'opacity-0 translate-y-4' : 'opacity-100 translate-y-0'
-          }`}>
-            {slides[currentSlide % slides.length]?.subtitle || "Find your next favorite read"}
-          </p> */}
-          <div className={`transition-all duration-500 delay-200 ${
-            isTransitioning ? 'opacity-0 translate-y-4' : 'opacity-100 translate-y-0'
-          }`}>
-            {/* <Button asChild variant="hero" size="lg" className="text-base md:text-lg px-6 md:px-8 hover:scale-105 transition-transform duration-200">
-              <Link to={slides[currentSlide % slides.length]?.link || "/books"}>
-                <ShoppingBag className="mr-2 h-4 w-4 md:h-5 md:w-5" />
-                {slides[currentSlide % slides.length]?.cta || "Browse Books"}
-              </Link>
-            </Button> */}
-          </div>
-        </div>
-
-        {/* Right Arrow */}
         <Button
           variant="ghost"
           size="icon"
           onClick={nextSlide}
           disabled={isTransitioning}
-          className="hidden sm:flex text-white hover:bg-white/20 backdrop-blur-sm transition-all duration-200 hover:scale-110 disabled:opacity-50"
+          className="absolute right-4 md:right-8 z-20 h-12 w-12 bg-background/80 backdrop-blur-md border border-border/50 text-foreground hover:bg-background/90 transition-all duration-300 hover:scale-110 disabled:opacity-50 shadow-lg"
         >
-          <ChevronRight className="h-6 w-6" />
+          <ChevronRight className="h-5 w-5" />
         </Button>
+
+        {/* Main Content */}
+        <div className="section-container">
+          <div className="max-w-3xl">
+            {/* Badge */}
+            <div className={`mb-4 transition-all duration-700 delay-100 ${
+              isTransitioning ? 'opacity-0 translate-y-8' : 'opacity-100 translate-y-0'
+            }`}>
+              <span className="inline-flex items-center gap-2 bg-primary/10 text-primary border border-primary/20 px-4 py-2 rounded-full text-sm font-medium backdrop-blur-sm">
+                <Star className="h-4 w-4" />
+                {currentSlideData.badge}
+              </span>
+            </div>
+
+            {/* Title */}
+            <h1 className={`text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-6 leading-tight transition-all duration-700 delay-200 ${
+              isTransitioning ? 'opacity-0 translate-y-8' : 'opacity-100 translate-y-0'
+            }`}>
+              {currentSlideData.title}
+            </h1>
+
+            {/* Subtitle */}
+            <p className={`text-lg md:text-xl text-muted-foreground mb-8 max-w-2xl leading-relaxed transition-all duration-700 delay-300 ${
+              isTransitioning ? 'opacity-0 translate-y-8' : 'opacity-100 translate-y-0'
+            }`}>
+              {currentSlideData.subtitle}
+            </p>
+
+            {/* CTA and Stats */}
+            <div className={`flex flex-col sm:flex-row items-start sm:items-center gap-6 transition-all duration-700 delay-500 ${
+              isTransitioning ? 'opacity-0 translate-y-8' : 'opacity-100 translate-y-0'
+            }`}>
+              <Button asChild size="lg" className="btn-primary group">
+                <Link to={currentSlideData.link}>
+                  <ShoppingBag className="mr-3 h-5 w-5 transition-transform group-hover:scale-110" />
+                  {currentSlideData.cta}
+                </Link>
+              </Button>
+
+              <div className="flex items-center gap-2 text-muted-foreground">
+                <TrendingUp className="h-5 w-5 text-accent" />
+                <span className="font-medium">{currentSlideData.stats}</span>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
-      {/* Slide Indicators */}
-      <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2 z-10">
-        {Array.from({ length: Math.max(slides.length, deviceImages.length) }).map((_, index) => (
-          <button
-            key={index}
-            onClick={() => !isTransitioning && changeSlide(index)}
-            disabled={isTransitioning}
-            className={`w-3 h-3 rounded-full transition-all duration-300 ${
-              index === currentSlide 
-                ? 'bg-white scale-110' 
-                : 'bg-white/50 hover:bg-white/70 hover:scale-105'
-            } disabled:opacity-50`}
-          />
-        ))}
+      {/* Professional Slide Indicators */}
+      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20">
+        <div className="flex items-center gap-3 bg-background/80 backdrop-blur-md border border-border/50 rounded-full px-4 py-3 shadow-lg">
+          {Array.from({ length: Math.max(slides.length, deviceImages.length) }).map((_, index) => (
+            <button
+              key={index}
+              onClick={() => !isTransitioning && changeSlide(index)}
+              disabled={isTransitioning}
+              className={`transition-all duration-300 rounded-full ${
+                index === currentSlide 
+                  ? 'w-8 h-3 bg-primary' 
+                  : 'w-3 h-3 bg-muted-foreground/30 hover:bg-muted-foreground/50'
+              } disabled:opacity-50`}
+            />
+          ))}
+        </div>
       </div>
 
-      {/* Progress bar for current slide */}
-      <div className="absolute bottom-0 left-0 w-full h-1 bg-white/20 z-10">
+      {/* Elegant Progress Bar */}
+      <div className="absolute bottom-0 left-0 w-full h-0.5 bg-border z-20">
         <div 
-          className="h-full bg-white transition-all duration-[3000ms] ease-linear"
+          className="h-full bg-gradient-to-r from-primary to-secondary transition-all duration-[3000ms] ease-linear"
           style={{ 
             width: isTransitioning ? '0%' : '100%',
             transitionDuration: isTransitioning ? '0ms' : '3000ms'
