@@ -18,7 +18,9 @@ import Payment from "./pages/Payment";
 import Wishlist from "./pages/Wishlist";
 import Support from "./pages/Support";
 import Admin from "./pages/Admin";
+import Schema from "./pages/admin/Schema";
 import NotFound from "./pages/NotFound";
+import { ProtectedRoute } from "./components/ProtectedRoute";
 
 const queryClient = new QueryClient();
 
@@ -43,7 +45,8 @@ const App = () => (
           <Route path="/cart" element={<Cart />} />
           <Route path="/book-request" element={<BookRequest />} />
           <Route path="/support" element={<Support />} />
-          <Route path="/admin" element={<Admin />} />
+          <Route path="/admin" element={<ProtectedRoute><Admin /></ProtectedRoute>} />
+          <Route path="/admin/schema" element={<ProtectedRoute><Schema /></ProtectedRoute>} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
